@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/res/overlay">
+        <file>Buttonless.png</file>
+    </qresource>
+    <qresource prefix="/res/buttons">
+        <file>backButton.svg</file>
+        <file>chargeButton.svg</file>
+        <file>downButton.svg</file>
+        <file>leftButton.svg</file>
+        <file>menuButton.svg</file>
+        <file>okButton.svg</file>
+        <file>powerButton.svg</file>
+        <file>rightButton.svg</file>
+        <file>upButton.svg</file>
+    </qresource>
+</RCC>

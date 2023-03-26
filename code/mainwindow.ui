@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="label2">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -201,7 +201,7 @@ border-radius: 20px;
     </property>
    </widget>
    <zorder>label</zorder>
-   <zorder>label_7</zorder>
+   <zorder>label2</zorder>
    <zorder>screenDisplay</zorder>
    <zorder>upButton</zorder>
    <zorder>leftButton</zorder>

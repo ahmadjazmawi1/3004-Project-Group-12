@@ -17,5 +17,14 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+    void upButton();
+    void downButton();
+    void leftButton();
+    void rightButton();
+    void okButton();
+    void backButton();
+    void menuButton();
 };
 #endif // MAINWINDOW_H

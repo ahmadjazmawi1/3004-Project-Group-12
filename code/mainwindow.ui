@@ -6,35 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>776</width>
-    <height>566</height>
+    <width>503</width>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>-30</y>
-      <width>521</width>
-      <height>641</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">image: url(:/res/overlay/Buttonless.png);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>320</y>
+      <x>90</x>
+      <y>260</y>
       <width>54</width>
       <height>17</height>
      </rect>
@@ -43,21 +27,21 @@
      <string/>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QGraphicsView" name="screenDisplay">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>130</y>
-      <width>401</width>
-      <height>181</height>
+      <x>60</x>
+      <y>70</y>
+      <width>411</width>
+      <height>191</height>
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="upButton">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>320</y>
+      <x>240</x>
+      <y>280</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -74,11 +58,11 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="leftButton">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>370</y>
+      <x>180</x>
+      <y>330</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -95,11 +79,11 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="downButton">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>420</y>
+      <x>240</x>
+      <y>390</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -116,11 +100,11 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="okButton">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>370</y>
+      <x>240</x>
+      <y>330</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -137,11 +121,11 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="rightButton">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>370</y>
+      <x>300</x>
+      <y>330</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -158,11 +142,11 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_6">
+   <widget class="QPushButton" name="menuButton">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>330</y>
+      <x>410</x>
+      <y>270</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -179,11 +163,11 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
+   <widget class="QPushButton" name="backButton">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>320</y>
+      <x>70</x>
+      <y>270</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -200,23 +184,39 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <zorder>label_7</zorder>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>0</y>
+      <width>541</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/res/overlay/Buttonless1.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>label</zorder>
-   <zorder>graphicsView</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>pushButton_3</zorder>
-   <zorder>pushButton_4</zorder>
-   <zorder>pushButton_5</zorder>
-   <zorder>pushButton_6</zorder>
-   <zorder>pushButton_7</zorder>
+   <zorder>label_7</zorder>
+   <zorder>screenDisplay</zorder>
+   <zorder>upButton</zorder>
+   <zorder>leftButton</zorder>
+   <zorder>downButton</zorder>
+   <zorder>okButton</zorder>
+   <zorder>rightButton</zorder>
+   <zorder>menuButton</zorder>
+   <zorder>backButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>776</width>
+     <width>503</width>
      <height>22</height>
     </rect>
    </property>

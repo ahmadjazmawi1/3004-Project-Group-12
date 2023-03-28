@@ -63,3 +63,12 @@ void MainWindow::powerButton(){
     qInfo("power button pressed");
 
 }
+
+std::map<int, int> MainWindow::generateData(){
+    srand((unsigned) time(NULL));
+      std::map<int, int> map;
+      for(int i=1;i<65;++i){
+        map[i] = 40 +(rand() % 61);
+      }
+      return map;
+}

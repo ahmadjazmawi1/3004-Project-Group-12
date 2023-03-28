@@ -14,6 +14,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    std::map<int, int> generateData();
+
 
 private:
     Ui::MainWindow *ui;

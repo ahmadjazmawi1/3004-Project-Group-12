@@ -26,5 +26,6 @@ private slots:
     void okButton();
     void backButton();
     void menuButton();
+    void powerButton();
 };
 #endif // MAINWINDOW_H

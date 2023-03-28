@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->okButton, SIGNAL (released()), this, SLOT (okButton()));
     connect(ui->backButton, SIGNAL (released()), this, SLOT (backButton()));
     connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
+    connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
 
 
 }
@@ -55,5 +56,10 @@ void MainWindow::backButton(){
 
 void MainWindow::menuButton(){
     qInfo("menu button pressed");
+
+}
+
+void MainWindow::powerButton(){
+    qInfo("power button pressed");
 
 }

@@ -222,6 +222,26 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
+   <widget class="QWidget" name="mainMenu" native="true">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>160</y>
+      <width>381</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <widget class="QListWidget" name="mainListWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>381</width>
+       <height>101</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -233,6 +253,7 @@ border-radius: 20px;
    <zorder>menuButton</zorder>
    <zorder>backButton</zorder>
    <zorder>powerButton</zorder>
+   <zorder>mainMenu</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

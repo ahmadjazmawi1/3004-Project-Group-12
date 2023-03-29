@@ -28,5 +28,5 @@ QString Menu::getName() { return name; }
 QStringList Menu::getMenuItems() { return menuItems; }
 Menu* Menu::getParent() { return parent; }
 int Menu::getPos() { return position; }
-Menu* Menu::get(int i) { cout<<subMenus[i]; return subMenus[i];}
+Menu* Menu::get(int i) { return subMenus[i];}
 

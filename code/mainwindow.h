@@ -27,6 +27,7 @@ private:
     QStringList settingList;
     QStringList challengeList;
     int currChallenge=1;
+    int currPacer=1;
 
 
 

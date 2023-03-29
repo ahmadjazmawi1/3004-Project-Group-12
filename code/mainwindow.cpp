@@ -108,17 +108,11 @@ void MainWindow::okButton(){
         this->currChallenge = index;
         return;
     }
-
-
-    //if menu is a parent and clicking on it should display more menus
-    if (masterMenu->get(index)->getMenuItems().length() > 0) {
-        masterMenu = masterMenu->get(index);
-        MainWindow::updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
-        cout<<"HAHAHAHA"<<endl;
-
+    else if(masterMenu->getName() == "BREATH PACER SETTINGS"){
+        this->currPacer = index;
+        return;
     }
-
-    else if(masterMenu->get(index)->getName() =="CHALLENGE LEVEL"){
+    else if(masterMenu->get(index)->getName() == "CHALLENGE LEVEL"){
         masterMenu = masterMenu->get(index);
         MainWindow::updateMenu("CHALLENGE LEVEL", this->challengeList);
     }
@@ -127,15 +121,23 @@ void MainWindow::okButton(){
         masterMenu = masterMenu->get(index);
         MainWindow::updateMenu("BREATH PACER SETTINGS", this->breathPList);
     }
-
-
-
-
-
+    //if menu is a parent and clicking on it should display more menus
+    else if (masterMenu->get(index)->getMenuItems().length() > 0) {
+        masterMenu = masterMenu->get(index);
+        MainWindow::updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+    }
 }
 
 void MainWindow::backButton(){
     qInfo("back button pressed");
+    if (masterMenu->getName() == "MAIN MENU") {
+        activeQListWidget->setCurrentRow(0);
+    }
+    else {
+        masterMenu = masterMenu->getParent();
+        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+    }
+
 
 }
 

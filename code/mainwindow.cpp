@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget->addItems(masterMenu->getMenuItems());
     activeQListWidget->setCurrentRow(0);
     initMenus(masterMenu);
+    ui->Graphwidget->setVisible(false);
 
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
@@ -22,6 +23,26 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
 
+    QVector<double> x(65), y(65); // initialize with entries 0..100
+    std::map<int, int> data = generateData();
+    int i = 0;
+    for(auto& p : data){
+        x[i] = p.first;
+        y[i] = p.second;
+        i++;
+    }
+
+
+        // create graph and assign data to it:
+    ui->Graphwidget->addGraph();
+    ui->Graphwidget->graph(0)->setData(x, y);
+        // give the axes some labels:
+    ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
+    ui->Graphwidget->yAxis->setLabel("Heart Rate");
+        // set axes ranges, so we see all data:
+        ui->Graphwidget->xAxis->setRange(0, 65);
+        ui->Graphwidget->yAxis->setRange(0, 100);
+        ui->Graphwidget->replot();
 }
 void MainWindow::initMenus(Menu *m){
 

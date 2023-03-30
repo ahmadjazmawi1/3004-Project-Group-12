@@ -203,8 +203,8 @@ border-radius: 20px;
    <widget class="QPushButton" name="powerButton">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>400</y>
+      <x>690</x>
+      <y>390</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -237,7 +237,17 @@ border-radius: 20px;
        <x>0</x>
        <y>0</y>
        <width>381</width>
-       <height>101</height>
+       <height>111</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QCustomPlot" name="Graphwidget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>381</width>
+       <height>121</height>
       </rect>
      </property>
     </widget>
@@ -267,6 +277,14 @@ border-radius: 20px;
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

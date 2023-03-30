@@ -16,8 +16,34 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
 
+    // generate some data:
+    QVector<double> x(65), y(65); // initialize with entries 0..100
+    std::map<int, int> data = generateData();
+    int i = 0;
+    for(auto& p : data){
+        x[i] = p.first;
+        y[i] = p.second;
+        i++;
+    }
+
+
+    // create graph and assign data to it:
+    ui->Graphwidget->addGraph();
+    ui->Graphwidget->graph(0)->setData(x, y);
+    // give the axes some labels:
+    ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
+    ui->Graphwidget->yAxis->setLabel("Heart Rate");
+    // set axes ranges, so we see all data:
+    ui->Graphwidget->xAxis->setRange(0, 65);
+    ui->Graphwidget->yAxis->setRange(0, 100);
+    ui->Graphwidget->replot();
+
+
 
 }
+
+
+
 
 MainWindow::~MainWindow()
 {
@@ -63,7 +89,6 @@ void MainWindow::powerButton(){
     qInfo("power button pressed");
 
 }
-
 std::map<int, int> MainWindow::generateData(){
     srand((unsigned) time(NULL));
       std::map<int, int> map;
@@ -72,3 +97,4 @@ std::map<int, int> MainWindow::generateData(){
       }
       return map;
 }
+

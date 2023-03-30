@@ -17,6 +17,7 @@ public:
     std::map<int, int> generateData();
 
 
+
 private:
     Ui::MainWindow *ui;
 

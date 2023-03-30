@@ -222,6 +222,16 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
+   <widget class="QCustomPlot" name="Graphwidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>190</y>
+      <width>351</width>
+      <height>121</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -233,6 +243,7 @@ border-radius: 20px;
    <zorder>menuButton</zorder>
    <zorder>backButton</zorder>
    <zorder>powerButton</zorder>
+   <zorder>Graphwidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -246,6 +257,14 @@ border-radius: 20px;
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

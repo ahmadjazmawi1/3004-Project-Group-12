@@ -252,6 +252,27 @@ border-radius: 20px;
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>380</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	image: url(:/res/buttons/chargeButton.svg);
+background-color: #ffffff;
+border-radius: 20px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -264,6 +285,7 @@ border-radius: 20px;
    <zorder>backButton</zorder>
    <zorder>powerButton</zorder>
    <zorder>mainMenu</zorder>
+   <zorder>pushButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget->setCurrentRow(0);
     initMenus(masterMenu);
     ui->Graphwidget->setVisible(false);
+    powerStatus=true;
 
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
@@ -170,6 +171,16 @@ void MainWindow::menuButton(){
 void MainWindow::powerButton(){
     qInfo("power button pressed");
 
+        if(powerStatus==false){
+            powerStatus=true;
+            ui->screenDisplay->setStyleSheet("background-color: white");
+        }else{
+            powerStatus=false;
+            ui->screenDisplay->setStyleSheet("background-color: black");
+        }
+
+        ui->mainListWidget->setVisible(powerStatus);
+        ui->mainMenu->setVisible(powerStatus);
 }
 
 std::map<int, int> MainWindow::generateData(){

@@ -28,6 +28,7 @@ private:
     QStringList challengeList;
     int currChallenge=1;
     int currPacer=1;
+    bool powerStatus;
 
 
 

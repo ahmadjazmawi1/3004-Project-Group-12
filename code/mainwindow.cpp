@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 using namespace std;
 #include <iostream>
+#include <unistd.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -11,8 +12,20 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget = ui->mainListWidget;
     activeQListWidget->addItems(masterMenu->getMenuItems());
     activeQListWidget->setCurrentRow(0);
+
+    Session* s = new Session();
+    sleep(5);
+    Session* se = new Session();
+    this->allSessions.append(s);
+    cout<<allSessions.size();
+    this->allSessions.append(se);
+    //makeGraph();
     initMenus(masterMenu);
     ui->Graphwidget->setVisible(false);
+    ui->coherenceLabel->setVisible(false);
+    ui->lengthLabel->setVisible(false);
+    ui->achievementLabel->setVisible(false);
+
     powerStatus=true;
 
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
@@ -24,8 +37,28 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
 
+
+}
+void MainWindow::showSummary(Session* s){
+
+    ui->Graphwidget->setVisible(true);
+    ui->coherenceLabel->setVisible(true);
+    QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
+    ui->coherenceLabel->setText(co);
+    QString le = "Length\n"+QString::asprintf("%0.2f", s->getLength());
+    ui->lengthLabel->setVisible(true);
+    ui->lengthLabel->setText(le);
+
+    ui->achievementLabel->setVisible(true);
+    QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
+    ui->achievementLabel->setText(ach);
+    makeGraph(s);
+    this->inSummary = true;
+
+}
+void MainWindow::makeGraph(Session* s){
     QVector<double> x(65), y(65); // initialize with entries 0..100
-    std::map<int, int> data = generateData();
+    std::map<int, int> data = s->data;
     int i = 0;
     for(auto& p : data){
         x[i] = p.first;
@@ -41,13 +74,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
     ui->Graphwidget->yAxis->setLabel("Heart Rate");
         // set axes ranges, so we see all data:
-        ui->Graphwidget->xAxis->setRange(0, 65);
-        ui->Graphwidget->yAxis->setRange(0, 100);
-        ui->Graphwidget->replot();
+    ui->Graphwidget->xAxis->setRange(0, 65);
+    ui->Graphwidget->yAxis->setRange(0, 100);
+    ui->Graphwidget->replot();
 }
 void MainWindow::initMenus(Menu *m){
-
-    QStringList historyList;
     this->settingList.append("CHALLENGE LEVEL");
     this->settingList.append("BREATH PACER SETTINGS");
 
@@ -56,7 +87,7 @@ void MainWindow::initMenus(Menu *m){
     settings->addChildMenu(new Menu("CHALLENGE LEVEL", {}, settings));
     settings->addChildMenu(new Menu("BREATH PACER SETTINGS", {}, settings));
 
-
+    //***************SETTINGS**************
     for(int i=1;i<5;i++){
         this->challengeList.append(QString::number(i));
     }
@@ -75,6 +106,24 @@ void MainWindow::initMenus(Menu *m){
     for(int i=1;i<31;i++){
         breathPacer->addChildMenu((new Menu(QString::number(i), {}, breathPacer)));
     }
+
+
+    //*******************HISTORY**********************
+    QStringList historyList;
+    //cout<<allSessions.size();
+    for(int i=0;i<this->allSessions.size();i++){
+        historyList.append(this->allSessions.at(i)->getTime().toString("h:mm:ss ap"));
+        //cout<<this->allSessions[i]->getTime().toString("h:mm:ss ap").toStdString();
+    }
+    Menu* history = new Menu("HISTORY", historyList, m);
+    m->addChildMenu(history);
+    for(int i=0;i<this->allSessions.size();i++){
+        //cout<<"IN LOOP"<<endl;
+        history->addChildMenu(new Menu(this->allSessions.at(i)->getTime().toString("h:mm ap"), {}, history));
+    }
+
+
+
 
 
 
@@ -122,18 +171,30 @@ void MainWindow::rightButton(){
 void MainWindow::okButton(){
     qInfo("ok button pressed");
     int index = activeQListWidget->currentRow();
-
+    if (index < 0) return;
     QString n = masterMenu->getName();
-
+    //cout<<"N: "<<n.toStdString()<<endl;
     //prevent crash if OK is pressed in challenge level
     if (masterMenu->getName() == "CHALLENGE LEVEL") {
         this->currChallenge = index;
+        return;
+    }
+
+    if(masterMenu->getName() == "HISTORY"){
+        masterMenu = masterMenu->get(index);
+        MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});
+        showSummary(allSessions.at(index));
         return;
     }
     else if(masterMenu->getName() == "BREATH PACER SETTINGS"){
         this->currPacer = index;
         return;
     }
+    //cout<<"INDEX: "<<index<<endl;
+    if(masterMenu->getName() == allSessions.at(index)->getTime().toString()){
+        return;
+    }
+
     else if(masterMenu->get(index)->getName() == "CHALLENGE LEVEL"){
         masterMenu = masterMenu->get(index);
         MainWindow::updateMenu("CHALLENGE LEVEL", this->challengeList);
@@ -152,6 +213,12 @@ void MainWindow::okButton(){
 
 void MainWindow::backButton(){
     qInfo("back button pressed");
+    if(this->inSummary==true){
+        ui->Graphwidget->setVisible(false);
+        ui->coherenceLabel->setVisible(false);
+        ui->lengthLabel->setVisible(false);
+        ui->achievementLabel->setVisible(false);
+    }
     if (masterMenu->getName() == "MAIN MENU") {
         activeQListWidget->setCurrentRow(0);
     }
@@ -183,14 +250,7 @@ void MainWindow::powerButton(){
         ui->mainMenu->setVisible(powerStatus);
 }
 
-std::map<int, int> MainWindow::generateData(){
-    srand((unsigned) time(NULL));
-      std::map<int, int> map;
-      for(int i=1;i<65;++i){
-        map[i] = 40 +(rand() % 61);
-      }
-      return map;
-}
+
 
 void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList menuItems){
     activeQListWidget->clear();

@@ -1,8 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "menu.h"
+#include "session.h"
 #include <QMainWindow>
 #include <QListWidget>
+#include <QVector>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -29,6 +31,10 @@ private:
     int currChallenge=1;
     int currPacer=1;
     bool powerStatus;
+    bool isSession=false;
+    Session *session;
+    QVector<Session*> allSessions;
+    bool inSummary=false;
 
 
 
@@ -43,5 +49,7 @@ private slots:
     void backButton();
     void menuButton();
     void powerButton();
+    void makeGraph(Session*);
+    void showSummary(Session*);
 };
 #endif // MAINWINDOW_H

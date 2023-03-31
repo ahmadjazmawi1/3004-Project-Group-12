@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <QVector>
 #include <QTimer>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -19,7 +20,7 @@ public:
     std::map<int, int> generateData();
     void initMenus(Menu*);
     void updateMenu(const QString, const QStringList);
-
+    void BatLevel(double batLevel);
 
 private:
     Ui::MainWindow *ui;
@@ -39,6 +40,8 @@ private:
     QTimer *graphTimer;         //graphs the data every second
     QTimer *dataTimer;          //generates 1 data value every second
 
+    int BatteryLevel;
+    QTimer *simTime;
 
 
 
@@ -55,5 +58,7 @@ private slots:
     void makeGraph(Session*);
     void showSummary(Session*);
     void handleTimeout();
+    void ChargeBattery();
+    void useBattery();
 };
 #endif // MAINWINDOW_H

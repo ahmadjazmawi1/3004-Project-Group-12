@@ -28,7 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lengthLabel->setVisible(false);
     ui->achievementLabel->setVisible(false);
 
-    powerStatus=true;
+    powerStatus=false;
+    ui->screenDisplay->setStyleSheet("background-color: black");
+    ui->mainListWidget->setVisible(powerStatus);
+    ui->batteryLevel->setVisible(powerStatus);
+    ui->mainMenu->setVisible(powerStatus);
+    simTime = new QTimer(this);;
 
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
@@ -38,7 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->backButton, SIGNAL (released()), this, SLOT (backButton()));
     connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
-
+    connect(ui->chargeButton, SIGNAL (released()), this, SLOT (ChargeBattery()));
+    BatteryLevel = 60;
 
 }
 
@@ -132,11 +138,6 @@ void MainWindow::initMenus(Menu *m){
         //cout<<"IN LOOP"<<endl;
         history->addChildMenu(new Menu(this->allSessions.at(i)->getTime().toString("h:mm ap"), {}, history));
     }
-
-
-
-
-
 
 
 }
@@ -253,17 +254,71 @@ void MainWindow::powerButton(){
         if(powerStatus==false){
             powerStatus=true;
             ui->screenDisplay->setStyleSheet("background-color: white");
+
+
+                simTime->start(10000);
+                connect(simTime, SIGNAL (timeout()), this, SLOT (useBattery()));
+
+
         }else{
             powerStatus=false;
             ui->screenDisplay->setStyleSheet("background-color: black");
         }
-
+        ui->batteryLevel->setVisible(powerStatus);
         ui->mainListWidget->setVisible(powerStatus);
         ui->mainMenu->setVisible(powerStatus);
 }
 
+void MainWindow::ChargeBattery() {
+
+    int batteryLevel = 100.0;
+    BatLevel(batteryLevel);
+}
+void MainWindow::useBattery() {
+    if (BatteryLevel>0){
+        BatteryLevel-=1.0;
+
+        BatLevel(BatteryLevel);
+    }else{
+        powerStatus=false;
+        ui->screenDisplay->setStyleSheet("background-color: black");
+
+        ui->batteryLevel->setVisible(powerStatus);
+        ui->mainListWidget->setVisible(powerStatus);
+        ui->mainMenu->setVisible(powerStatus);
+    }
+
+}
+void MainWindow::BatLevel(double batLevel) {
+
+    if (batLevel >= 0.0 && batLevel <= 100.0) {
+        if (batLevel == 0.0 && powerStatus == true) {
+
+            BatteryLevel=0;
+        }else{
+            BatteryLevel=batLevel;
+        }
 
 
+        int adjLevel = int(batLevel);
+        ui->batteryLevel->setValue(adjLevel);
+
+        QString greenBat = "QProgressBar { selection-background-color: rgb(78, 154, 6); background-color: rgb(0, 0, 0); }";
+        QString yellowBat = "QProgressBar { selection-background-color: rgb(196, 160, 0); background-color: rgb(0, 0, 0); }";
+        QString redBat = "QProgressBar { selection-background-color: rgb(164, 0, 0); background-color: rgb(0, 0, 0); }";
+
+        if (adjLevel >= 50) {
+            ui->batteryLevel->setStyleSheet(greenBat);
+        }
+        else if (adjLevel >= 20) {
+            ui->batteryLevel->setStyleSheet(yellowBat);
+        }
+        else {
+            ui->batteryLevel->setStyleSheet(redBat);
+        }
+    }
+
+}
 void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList menuItems){
     activeQListWidget->clear();
     activeQListWidget->addItems(menuItems);

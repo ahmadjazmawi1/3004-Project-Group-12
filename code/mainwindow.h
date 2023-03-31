@@ -1,8 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
+
 #include "menu.h"
 #include <QMainWindow>
 #include <QListWidget>
+#include <QTimer>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -16,6 +19,9 @@ public:
     std::map<int, int> generateData();
     void initMenus(Menu*);
     void updateMenu(const QString, const QStringList);
+    void BatLevel(double batLevel);
+
+
 
 
 private:
@@ -29,6 +35,9 @@ private:
     int currChallenge=1;
     int currPacer=1;
     bool powerStatus;
+    int BatteryLevel;
+    QTimer *simTime;
+
 
 
 
@@ -43,5 +52,7 @@ private slots:
     void backButton();
     void menuButton();
     void powerButton();
+    void ChargeBattery();
+    void useBattery();
 };
 #endif // MAINWINDOW_H

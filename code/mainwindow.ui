@@ -252,7 +252,7 @@ border-radius: 20px;
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="ChargeButton">
     <property name="geometry">
      <rect>
       <x>350</x>
@@ -273,6 +273,54 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
+   <widget class="QProgressBar" name="batteryLevel">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>130</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Ubuntu Mono</family>
+      <pointsize>7</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">selection-background-color: rgb(164, 0, 0);
+background-color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="value">
+     <number>60</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="textVisible">
+     <bool>true</bool>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+    <property name="format">
+     <string>%p%</string>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -285,7 +333,8 @@ border-radius: 20px;
    <zorder>backButton</zorder>
    <zorder>powerButton</zorder>
    <zorder>mainMenu</zorder>
-   <zorder>pushButton</zorder>
+   <zorder>ChargeButton</zorder>
+   <zorder>batteryLevel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

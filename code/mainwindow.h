@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QListWidget>
 #include <QVector>
+#include <QTimer>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -35,6 +36,8 @@ private:
     Session *session;
     QVector<Session*> allSessions;
     bool inSummary=false;
+    QTimer *graphTimer;         //graphs the data every second
+    QTimer *dataTimer;          //generates 1 data value every second
 
 
 
@@ -51,5 +54,6 @@ private slots:
     void powerButton();
     void makeGraph(Session*);
     void showSummary(Session*);
+    void handleTimeout();
 };
 #endif // MAINWINDOW_H

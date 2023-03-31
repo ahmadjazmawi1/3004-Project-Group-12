@@ -315,6 +315,63 @@ border-radius: 20px;
      <string>in</string>
     </property>
    </widget>
+   <widget class="QLabel" name="coherenceLabel">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>130</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Coherence</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lengthLabel">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>130</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Length</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="achievementLabel">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>130</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Achievement</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -331,6 +388,9 @@ border-radius: 20px;
    <zorder>breathPacer</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
+   <zorder>coherenceLabel</zorder>
+   <zorder>lengthLabel</zorder>
+   <zorder>achievementLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -338,7 +398,7 @@ border-radius: 20px;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>35</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

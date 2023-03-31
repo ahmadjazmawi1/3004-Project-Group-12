@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget->addItems(masterMenu->getMenuItems());
     activeQListWidget->setCurrentRow(0);
 
+    this->graphTimer = new QTimer(this);
+    this->dataTimer  = new QTimer(this);
     Session* s = new Session();
     sleep(5);
     Session* se = new Session();
@@ -39,25 +41,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 }
-void MainWindow::showSummary(Session* s){
 
-    ui->Graphwidget->setVisible(true);
-    ui->coherenceLabel->setVisible(true);
-    QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
-    ui->coherenceLabel->setText(co);
-    QString le = "Length\n"+QString::asprintf("%0.2f", s->getLength());
-    ui->lengthLabel->setVisible(true);
-    ui->lengthLabel->setText(le);
-
-    ui->achievementLabel->setVisible(true);
-    QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
-    ui->achievementLabel->setText(ach);
-    makeGraph(s);
-    this->inSummary = true;
-
-}
 void MainWindow::makeGraph(Session* s){
-    QVector<double> x(65), y(65); // initialize with entries 0..100
+    QVector<double> x(100000), y(100000); // initialize with entries 0..100
+    s->generateData();
     std::map<int, int> data = s->data;
     int i = 0;
     for(auto& p : data){
@@ -74,9 +61,33 @@ void MainWindow::makeGraph(Session* s){
     ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
     ui->Graphwidget->yAxis->setLabel("Heart Rate");
         // set axes ranges, so we see all data:
-    ui->Graphwidget->xAxis->setRange(0, 65);
+    ui->Graphwidget->xAxis->setRange(0, this->session->data.size());
     ui->Graphwidget->yAxis->setRange(0, 100);
     ui->Graphwidget->replot();
+}
+
+//only have this function because timeout signal doesnt take parameters, and this is the only way to get around that limitation
+void MainWindow::handleTimeout(){
+    makeGraph(this->session);
+}
+void MainWindow::showSummary(Session* s){
+
+    ui->Graphwidget->setVisible(true);
+    ui->coherenceLabel->setVisible(true);
+    QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
+    ui->coherenceLabel->setText(co);
+    QString le = "Length\n"+QString::asprintf("%0.2f", s->getLength());
+    ui->lengthLabel->setVisible(true);
+    ui->lengthLabel->setText(le);
+
+    ui->achievementLabel->setVisible(true);
+    QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
+    ui->achievementLabel->setText(ach);
+    connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
+    this->graphTimer->start(1000);
+    //makeGraph(s);
+    this->inSummary = true;
+
 }
 void MainWindow::initMenus(Menu *m){
     this->settingList.append("CHALLENGE LEVEL");
@@ -182,6 +193,7 @@ void MainWindow::okButton(){
 
     if(masterMenu->getName() == "HISTORY"){
         masterMenu = masterMenu->get(index);
+        this->session = allSessions.at(index);
         MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});
         showSummary(allSessions.at(index));
         return;

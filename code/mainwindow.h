@@ -46,6 +46,7 @@ private:
 
 
 
+
 private slots:
     void upButton();
     void downButton();
@@ -60,5 +61,7 @@ private slots:
     void handleTimeout();
     void ChargeBattery();
     void useBattery();
+    //void graphAllData();
+    void newSess(Session*);
 };
 #endif // MAINWINDOW_H

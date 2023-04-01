@@ -116,6 +116,8 @@ void MainWindow::handleTimeout(){
 }
 void MainWindow::showSummary(Session* s){
     this->graphTimer->stop();
+    this->breathPTimer->stop();
+    ui->breathPacer->setValue(ui->breathPacer->minimum());
     this->inSummary = true;
     ui->Graphwidget->clearGraphs();
     ui->Graphwidget->removeGraph(0);
@@ -465,3 +467,4 @@ void MainWindow::moveBreathPacer(){
     }
 
 }
+

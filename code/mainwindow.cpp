@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->batteryLevel->setVisible(powerStatus);
     ui->mainMenu->setVisible(powerStatus);
     simTime = new QTimer(this);;
+    breathPTimer = new QTimer(this);
 
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
@@ -98,6 +99,9 @@ void MainWindow::newSess(Session* s){
     //this->graphTimer->start(1000);
     connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     this->graphTimer->start(1000);
+
+    connect(breathPTimer, SIGNAL (timeout()), this, SLOT (moveBreathPacer()));
+    breathPTimer->start(1000);
 }
 
 //only have this function because timeout signal doesnt take parameters, and this is the only way to get around that limitation
@@ -436,5 +440,18 @@ void MainWindow::ledRed(){
 
 void MainWindow::ledOff(){
     ui->ledIndicator->setStyleSheet("background-color: rgb(211, 215, 207)");
+
+}
+
+void MainWindow::moveBreathPacer(){
+    int pace = currPacer;
+    if(pace<2){pace =2;}
+    int max = ui->breathPacer->maximum()/pace;
+    if(ui->breathPacer->value()+1 > ui->breathPacer->maximum()){
+        ui->breathPacer->setValue(ui->breathPacer->minimum());
+    }
+    else {
+        ui->breathPacer->setValue((ui->breathPacer->value()+max));
+    }
 
 }

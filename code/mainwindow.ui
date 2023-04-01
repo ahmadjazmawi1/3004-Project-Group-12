@@ -282,6 +282,9 @@ border-radius: 20px;
       <height>20</height>
      </rect>
     </property>
+    <property name="cursor">
+     <cursorShape>ForbiddenCursor</cursorShape>
+    </property>
     <property name="whatsThis">
      <string extracomment="Breath Pacer"/>
     </property>
@@ -470,7 +473,7 @@ border-radius: 20px;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>35</height>
     </rect>
    </property>
   </widget>

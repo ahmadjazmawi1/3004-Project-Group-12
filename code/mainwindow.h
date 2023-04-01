@@ -32,7 +32,7 @@ private:
     QStringList challengeList;
     QStringList histList;
     int currChallenge=1;
-    int currPacer=1;
+    int currPacer=10;
     bool powerStatus;
     bool isSession=false;
     Session *session;
@@ -43,6 +43,7 @@ private:
 
     int BatteryLevel;
     QTimer *simTime;
+    QTimer *breathPTimer;
 
 
 
@@ -68,5 +69,6 @@ private slots:
     void ledBlue();
     void ledGreen();
     void ledOff();
+    void moveBreathPacer();
 };
 #endif // MAINWINDOW_H

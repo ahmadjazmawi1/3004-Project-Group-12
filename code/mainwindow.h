@@ -30,6 +30,7 @@ private:
     QStringList breathPList;
     QStringList settingList;
     QStringList challengeList;
+    QStringList histList;
     int currChallenge=1;
     int currPacer=1;
     bool powerStatus;
@@ -42,6 +43,7 @@ private:
 
     int BatteryLevel;
     QTimer *simTime;
+
 
 
 
@@ -60,5 +62,7 @@ private slots:
     void handleTimeout();
     void ChargeBattery();
     void useBattery();
+    //void graphAllData();
+    void newSess(Session*);
 };
 #endif // MAINWINDOW_H

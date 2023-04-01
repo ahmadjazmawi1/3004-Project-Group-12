@@ -445,6 +445,19 @@ border-radius: 20px;
      <string notr="true">background-color: rgb(211, 215, 207);</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="DELETE">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>280</y>
+      <width>31</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DEL</string>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -466,6 +479,7 @@ border-radius: 20px;
    <zorder>achievementLabel</zorder>
    <zorder>frame</zorder>
    <zorder>ledIndicator</zorder>
+   <zorder>DELETE</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -473,7 +487,7 @@ border-radius: 20px;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>35</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

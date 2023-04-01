@@ -33,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->mainListWidget->setVisible(powerStatus);
     ui->batteryLevel->setVisible(powerStatus);
     ui->mainMenu->setVisible(powerStatus);
+    ui->breathPacer->setVisible(false);
+    ui->inLabel->setVisible(false);
+    ui->outLabel->setVisible(false);
     simTime = new QTimer(this);;
     breathPTimer = new QTimer(this);
 
@@ -100,6 +103,9 @@ void MainWindow::newSess(Session* s){
     connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     this->graphTimer->start(1000);
 
+    ui->breathPacer->setVisible(true);
+    ui->inLabel->setVisible(true);
+    ui->outLabel->setVisible(true);
     connect(breathPTimer, SIGNAL (timeout()), this, SLOT (moveBreathPacer()));
     breathPTimer->start(1000);
 }
@@ -285,6 +291,7 @@ void MainWindow::okButton(){
     //selects breath pacer settings
     else if(masterMenu->getName() == "BREATH PACER SETTINGS"){
         this->currPacer = index;
+        qInfo("breath pacer settings changed");
         return;
     }
 
@@ -328,6 +335,9 @@ void MainWindow::backButton(){
         ui->coherenceLabel->setVisible(false);
         ui->lengthLabel->setVisible(false);
         ui->achievementLabel->setVisible(false);
+        ui->breathPacer->setVisible(false);
+        ui->inLabel->setVisible(false);
+        ui->outLabel->setVisible(false);
         updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
         this->inSummary = false;
     }

@@ -375,6 +375,8 @@ void MainWindow::useBattery() {
 
         BatLevel(BatteryLevel);
     }else{
+        qInfo("Critcial Battery Level reached system will shut down !!!!");
+        qInfo("Please Re-Charge!!!");
         powerStatus=false;
         ui->screenDisplay->setStyleSheet("background-color: black");
 

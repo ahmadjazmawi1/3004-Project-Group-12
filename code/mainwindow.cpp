@@ -347,14 +347,13 @@ void MainWindow::menuButton(){
 void MainWindow::powerButton(){
     qInfo("power button pressed");
 
-        if(powerStatus==false){
+        if(powerStatus==false && BatteryLevel > 0){
             powerStatus=true;
             ui->screenDisplay->setStyleSheet("background-color: white");
 
 
                 simTime->start(10000);
                 connect(simTime, SIGNAL (timeout()), this, SLOT (useBattery()));
-
 
         }else{
             powerStatus=false;

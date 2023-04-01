@@ -70,5 +70,7 @@ private slots:
     void ledGreen();
     void ledOff();
     void moveBreathPacer();
+    void deleteSession(Session*);
+    void handleDelete();
 };
 #endif // MAINWINDOW_H

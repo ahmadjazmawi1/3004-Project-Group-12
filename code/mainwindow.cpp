@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    masterMenu = new Menu("MAIN MENU", {"START NEW SESSION","SETTINGS","HISTORY"}, nullptr);
+    masterMenu = new Menu("MAIN MENU", {"START NEW SESSION","SETTINGS","HISTORY", "RESET"}, nullptr);
     activeQListWidget = ui->mainListWidget;
     activeQListWidget->addItems(masterMenu->getMenuItems());
     activeQListWidget->setCurrentRow(0);
@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->coherenceLabel->setVisible(false);
     ui->lengthLabel->setVisible(false);
     ui->achievementLabel->setVisible(false);
-
+    ui->DELETE->setVisible(false);
     powerStatus=false;
     ui->screenDisplay->setStyleSheet("background-color: black");
     ui->mainListWidget->setVisible(powerStatus);
@@ -110,6 +110,15 @@ void MainWindow::newSess(Session* s){
     breathPTimer->start(1000);
 }
 
+void MainWindow::deleteSession(Session* s){
+    backButton();
+    //go back, and delete the session from the array
+    allSessions.removeOne(s);
+    this->histList.removeOne(s->getTime().toString("h:mm:ss ap"));
+}
+void MainWindow::handleDelete(){
+    deleteSession(this->session);
+}
 //only have this function because timeout signal doesnt take parameters, and this is the only way to get around that limitation
 void MainWindow::handleTimeout(){
     makeGraph(this->session);
@@ -189,6 +198,8 @@ void MainWindow::initMenus(Menu *m){
         //cout<<"IN LOOP"<<endl;
         history->addChildMenu(new Menu(this->allSessions.at(i)->getTime().toString("h:mm ap"), {}, history));
     }
+    Menu* reset = new Menu("RESET", {}, m);
+    m->addChildMenu(reset);
 
 
 }
@@ -233,7 +244,8 @@ void MainWindow::rightButton(){
 void MainWindow::okButton(){
     qInfo("ok button pressed");
     int index = activeQListWidget->currentRow();
-    //cout<<"INDEX: "<<index<<endl;
+    cout<<"OUTSIDE, NAME: "<<masterMenu->getName().toStdString()<<endl;
+    cout<<"INDEX: "<<index<<endl;
     //ends a session
     if(this->isSession == true){
         //cout<<"STOPPING THE SESSION"<<endl;
@@ -254,7 +266,11 @@ void MainWindow::okButton(){
 
     if (index < 0) return;
     QString n = masterMenu->getName();
-
+    if(index == 3 && masterMenu->getName() == "MAIN MENU"){
+        allSessions.clear();
+        histList.clear();
+        //delete this->session;
+    }
     //prevent crash if OK is pressed in challenge level
     if (masterMenu->getName() == "CHALLENGE LEVEL") {
         this->currChallenge = index;
@@ -262,7 +278,7 @@ void MainWindow::okButton(){
     }
     //starting a new session
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
-        activeQListWidget->setCurrentRow(0);
+        //activeQListWidget->setCurrentRow(0);
 
         this->session = new Session();
         MainWindow::updateMenu(this->session->getTime().toString(), {});
@@ -280,20 +296,30 @@ void MainWindow::okButton(){
         showSummary(allSessions.at(index));
         return;
     }
+
     //showing session dates in HISTORY option
+
     else if(masterMenu->getName() == "HISTORY"){
 
         //masterMenu = masterMenu->get(index);
         this->session = allSessions.at(index);
+        QStringList del;
+        del.append("DELETE");
+        ui->DELETE->setVisible(true);
+        connect(ui->DELETE, SIGNAL(released()), this, SLOT(handleDelete()));
+
         MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});
         //this->isSession = true;
         showSummary(allSessions.at(index));
         return;
     }
+
+    else if(masterMenu->getName() == "HISTORY"){
+        cout<<"DELETED"<<endl;
+    }
     //selects breath pacer settings
     else if(masterMenu->getName() == "BREATH PACER SETTINGS"){
         this->currPacer = index;
-        qInfo("breath pacer settings changed");
         return;
     }
 
@@ -301,6 +327,7 @@ void MainWindow::okButton(){
         masterMenu = masterMenu->get(index);
         cout<<masterMenu->getName().toStdString();
         MainWindow::updateMenu(masterMenu->getName(), histList);
+
     }
 
     //displays challenge level numbers
@@ -341,6 +368,7 @@ void MainWindow::backButton(){
         ui->inLabel->setVisible(false);
         ui->outLabel->setVisible(false);
         updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+        ui->DELETE->setVisible(false);
         this->inSummary = false;
     }
     if (masterMenu->getName() == "MAIN MENU") {

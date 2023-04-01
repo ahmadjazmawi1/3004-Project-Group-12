@@ -64,5 +64,9 @@ private slots:
     void useBattery();
     //void graphAllData();
     void newSess(Session*);
+    void ledRed();
+    void ledBlue();
+    void ledGreen();
+    void ledOff();
 };
 #endif // MAINWINDOW_H

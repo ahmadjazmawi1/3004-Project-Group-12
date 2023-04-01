@@ -216,7 +216,6 @@ void MainWindow::leftButton(){
 
 void MainWindow::rightButton(){
     qInfo("right button pressed");
-
 }
 
 void MainWindow::okButton(){
@@ -420,4 +419,22 @@ void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList me
     activeQListWidget->clear();
     activeQListWidget->addItems(menuItems);
     activeQListWidget->setCurrentRow(0);
+}
+
+//Led Indicator light functions:
+void MainWindow::ledGreen(){
+    ui->ledIndicator->setStyleSheet("background-color: green");
+}
+
+void MainWindow::ledBlue(){
+    ui->ledIndicator->setStyleSheet("background-color: blue");
+}
+
+void MainWindow::ledRed(){
+    ui->ledIndicator->setStyleSheet("background-color: red");
+}
+
+void MainWindow::ledOff(){
+    ui->ledIndicator->setStyleSheet("background-color: rgb(211, 215, 207)");
+
 }

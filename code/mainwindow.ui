@@ -429,6 +429,19 @@ border-radius: 20px;
      </property>
     </widget>
    </widget>
+   <widget class="QGraphicsView" name="ledIndicator">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>100</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(211, 215, 207);</string>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -449,6 +462,7 @@ border-radius: 20px;
    <zorder>lengthLabel</zorder>
    <zorder>achievementLabel</zorder>
    <zorder>frame</zorder>
+   <zorder>ledIndicator</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

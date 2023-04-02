@@ -8,6 +8,7 @@ Session::Session()
     this->currCoherence = 0.0;
     this->length = 00.00;
     this->achievement = 0.0;
+    this->challengeLevel = 1;
 
 }
 
@@ -37,4 +38,11 @@ double Session::getAchievement(){
 
 double Session::getLength(){
     return this->length;
+}
+int Session::getChallengeLevel(){
+    return this->challengeLevel;
+}
+
+void Session::setChallengeLevel(int c){
+    this->challengeLevel = c;
 }

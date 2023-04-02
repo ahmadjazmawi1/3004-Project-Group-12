@@ -72,5 +72,7 @@ private slots:
     void moveBreathPacer();
     void deleteSession(Session*);
     void handleDelete();
+    void changeBreathPacer(int);
+    void changeCL(int);
 };
 #endif // MAINWINDOW_H

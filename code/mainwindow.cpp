@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    masterMenu = new Menu("MAIN MENU", {"START NEW SESSION","SETTINGS","HISTORY", "RESET"}, nullptr);
+    masterMenu = new Menu("MAIN MENU", {"START NEW SESSION","HISTORY", "RESET"}, nullptr);
     activeQListWidget = ui->mainListWidget;
     activeQListWidget->addItems(masterMenu->getMenuItems());
     activeQListWidget->setCurrentRow(0);
@@ -48,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
     connect(ui->chargeButton, SIGNAL (released()), this, SLOT (ChargeBattery()));
+    connect(ui->bPSetting, SIGNAL(activated(int)), this, SLOT(changeBreathPacer(int)));
+    connect(ui->CHSetting, SIGNAL(activated(int)), this, SLOT(changeCL(int)));
     BatteryLevel = 60;
 
 }
@@ -156,33 +158,12 @@ void MainWindow::initMenus(Menu *m){
     this->settingList.append("CHALLENGE LEVEL");
     this->settingList.append("BREATH PACER SETTINGS");
 
-    Menu* settings = new Menu("SETTINGS", this->settingList, m);
+    //Menu* settings = new Menu("SETTINGS", this->settingList, m);
 
     Menu* newSession = new Menu("START NEW SESSION", this->settingList, m);
     m->addChildMenu(newSession);
-    m->addChildMenu(settings);
-    settings->addChildMenu(new Menu("CHALLENGE LEVEL", {}, settings));
-    settings->addChildMenu(new Menu("BREATH PACER SETTINGS", {}, settings));
+    //m->addChildMenu(settings);
 
-    //***************SETTINGS**************
-    for(int i=1;i<5;i++){
-        this->challengeList.append(QString::number(i));
-    }
-    Menu* challengeLevel = new Menu("CHALLENGE LEVEL", this->challengeList, settings);
-    settings->addChildMenu(challengeLevel);
-    for(int i=1;i<5;i++){
-        challengeLevel->addChildMenu(new Menu(QString::number(i), {}, challengeLevel));
-    }
-
-
-    for(int i=1;i<31;i++){
-        this->breathPList.append(QString::number(i));
-    }
-    Menu* breathPacer = new Menu("BREATH PACER", this->breathPList, settings);
-    settings->addChildMenu(breathPacer);
-    for(int i=1;i<31;i++){
-        breathPacer->addChildMenu((new Menu(QString::number(i), {}, breathPacer)));
-    }
 
 
     //*******************HISTORY**********************
@@ -241,6 +222,13 @@ void MainWindow::rightButton(){
     qInfo("right button pressed");
 }
 
+void MainWindow::changeCL(int c){
+    this->session->setChallengeLevel(c);
+}
+void MainWindow::changeBreathPacer(int b){
+    this->currPacer = b;
+}
+
 void MainWindow::okButton(){
     qInfo("ok button pressed");
     int index = activeQListWidget->currentRow();
@@ -266,7 +254,7 @@ void MainWindow::okButton(){
 
     if (index < 0) return;
     QString n = masterMenu->getName();
-    if(index == 3 && masterMenu->getName() == "MAIN MENU"){
+    if(index == 2 && masterMenu->getName() == "MAIN MENU"){
         allSessions.clear();
         histList.clear();
         //delete this->session;
@@ -284,6 +272,7 @@ void MainWindow::okButton(){
         MainWindow::updateMenu(this->session->getTime().toString(), {});
         newSess(this->session);
         this->isSession = true;
+
         return;
     }
     //stops the session

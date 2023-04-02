@@ -17,7 +17,7 @@ public:
     double getLength();
     double getAchievement();
     double getAvgCoherence();
-
+    int getChallengeLevel();
     //calculators
     void calculateCoherence();
     void calculateAchievement();
@@ -25,6 +25,7 @@ public:
     std::map<int, int> generateData();
     std::map<int, int> data;
     QDateTime getTime();
+    void setChallengeLevel(int);
     double currCoherence;
 
 
@@ -42,6 +43,7 @@ private:
     int challengeLevel;
     QString coherenceLevel;
     QDateTime startTime;
+
 
 
 };

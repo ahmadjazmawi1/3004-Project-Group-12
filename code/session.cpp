@@ -16,12 +16,7 @@ std::map<int, int> Session::generateData(){
     srand((unsigned) time(NULL));
     this->data[data.size()] = 40 + (rand() % 61);
     return this->data;
-//    srand((unsigned) time(NULL));
-//      std::map<int, int> map;
-//      for(int i=1;i<65;++i){
-//        map[i] = 40 +(rand() % 61);
-//      }
-//      return map;
+
 }
 
 QDateTime Session::getTime(){

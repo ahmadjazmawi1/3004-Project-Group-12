@@ -15,13 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->graphTimer = new QTimer(this);
     this->dataTimer  = new QTimer(this);
-    //Session* s = new Session();
-    //sleep(5);
-    //Session* se = new Session();
-    //this->allSessions.append(s);
-    cout<<allSessions.size();
-    //this->allSessions.append(se);
-    //makeGraph();
+
     initMenus(masterMenu);
     ui->Graphwidget->setVisible(false);
     ui->coherenceLabel->setVisible(false);
@@ -45,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->rightButton, SIGNAL (released()), this, SLOT (rightButton()));
     connect(ui->okButton, SIGNAL (released()), this, SLOT (okButton()));
     connect(ui->backButton, SIGNAL (released()), this, SLOT (backButton()));
-    connect(ui->menuButton, SIGNAL (released()), this, SLOT (menuButton()));
+    connect(ui->menuButton, SIGNAL (released()), this, SLOT (backButton()));
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
     connect(ui->chargeButton, SIGNAL (released()), this, SLOT (ChargeBattery()));
     connect(ui->bPSetting, SIGNAL(activated(int)), this, SLOT(changeBreathPacer(int)));
@@ -162,21 +156,17 @@ void MainWindow::initMenus(Menu *m){
 
     Menu* newSession = new Menu("START NEW SESSION", this->settingList, m);
     m->addChildMenu(newSession);
-    //m->addChildMenu(settings);
 
 
 
     //*******************HISTORY**********************
     QStringList historyList;
-    //cout<<allSessions.size();
     for(int i=0;i<this->allSessions.size();i++){
         historyList.append(this->allSessions.at(i)->getTime().toString("h:mm:ss ap"));
-        //cout<<this->allSessions[i]->getTime().toString("h:mm:ss ap").toStdString();
     }
     Menu* history = new Menu("HISTORY", histList, m);
     m->addChildMenu(history);
     for(int i=0;i<this->allSessions.size();i++){
-        //cout<<"IN LOOP"<<endl;
         history->addChildMenu(new Menu(this->allSessions.at(i)->getTime().toString("h:mm ap"), {}, history));
     }
     Menu* reset = new Menu("RESET", {}, m);
@@ -190,7 +180,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::upButton(){
-    qInfo("Up button pressed");
     int nextIndex = activeQListWidget->currentRow() - 1;
 
     if (nextIndex < 0) {
@@ -202,7 +191,6 @@ void MainWindow::upButton(){
 }
 
 void MainWindow::downButton(){
-    qInfo("down button pressed");
     int nextIndex = activeQListWidget->currentRow() + 1;
 
     if (nextIndex > activeQListWidget->count() - 1) {
@@ -214,12 +202,12 @@ void MainWindow::downButton(){
 }
 
 void MainWindow::leftButton(){
-    qInfo("left button pressed");
+
 
 }
 
 void MainWindow::rightButton(){
-    qInfo("right button pressed");
+
 }
 
 void MainWindow::changeCL(int c){
@@ -230,20 +218,15 @@ void MainWindow::changeBreathPacer(int b){
 }
 
 void MainWindow::okButton(){
-    qInfo("ok button pressed");
+
     int index = activeQListWidget->currentRow();
-    cout<<"OUTSIDE, NAME: "<<masterMenu->getName().toStdString()<<endl;
-    cout<<"INDEX: "<<index<<endl;
+
     //ends a session
     if(this->isSession == true){
-        //cout<<"STOPPING THE SESSION"<<endl;
-        //stop the session, i.e., save it to the database and show summary screen
+
         this->allSessions.append(this->session);
         this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
-        //for(int i=0;i<this->allSessions.size();i++){
-            //this->histList.append(this->allSessions.at(i)->getTime().toString("h:mm:ss ap"));
-            //cout<<this->allSessions[i]->getTime().toString("h:mm:ss ap").toStdString();
-        //}
+
         isSession=false;
         MainWindow::updateMenu(this->session->getTime().toString(), {});
         ui->Graphwidget->clearGraphs();
@@ -304,7 +287,6 @@ void MainWindow::okButton(){
     }
 
     else if(masterMenu->getName() == "HISTORY"){
-        cout<<"DELETED"<<endl;
     }
     //selects breath pacer settings
     else if(masterMenu->getName() == "BREATH PACER SETTINGS"){
@@ -314,7 +296,6 @@ void MainWindow::okButton(){
 
     else if(masterMenu->get(index)->getName() == "HISTORY"){
         masterMenu = masterMenu->get(index);
-        cout<<masterMenu->getName().toStdString();
         MainWindow::updateMenu(masterMenu->getName(), histList);
 
     }
@@ -335,7 +316,6 @@ void MainWindow::okButton(){
     else if (masterMenu->get(index)->getMenuItems().length() > 0) {
 
         for(int i=0;i<3;i++){
-            cout<<masterMenu->get(i)->getName().toStdString();
         }
         masterMenu = masterMenu->get(index);
 
@@ -345,10 +325,8 @@ void MainWindow::okButton(){
 }
 
 void MainWindow::backButton(){
-    qInfo("back button pressed");
-    cout<<this->inSummary<<endl;
+
     if(this->inSummary==true){
-        cout<<masterMenu->getName().toStdString();
         ui->Graphwidget->setVisible(false);
         ui->coherenceLabel->setVisible(false);
         ui->lengthLabel->setVisible(false);
@@ -371,13 +349,10 @@ void MainWindow::backButton(){
 
 }
 
-void MainWindow::menuButton(){
-    qInfo("menu button pressed");
 
-}
 
 void MainWindow::powerButton(){
-    qInfo("power button pressed");
+
 
         if(powerStatus==false && BatteryLevel > 0){
             powerStatus=true;

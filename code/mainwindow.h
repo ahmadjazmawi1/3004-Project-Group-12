@@ -56,14 +56,12 @@ private slots:
     void rightButton();
     void okButton();
     void backButton();
-    void menuButton();
     void powerButton();
     void makeGraph(Session*);
     void showSummary(Session*);
     void handleTimeout();
     void ChargeBattery();
     void useBattery();
-    //void graphAllData();
     void newSess(Session*);
     void ledRed();
     void ledBlue();

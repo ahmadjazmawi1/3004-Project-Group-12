@@ -394,6 +394,7 @@ void MainWindow::powerButton(){
         ui->batteryLevel->setVisible(powerStatus);
         ui->mainListWidget->setVisible(powerStatus);
         ui->mainMenu->setVisible(powerStatus);
+        ui->breathPacer->setVisible(powerStatus);
 }
 
 void MainWindow::ChargeBattery() {

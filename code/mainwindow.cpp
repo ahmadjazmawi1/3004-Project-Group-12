@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->outLabel->setVisible(false);
     simTime = new QTimer(this);;
     breathPTimer = new QTimer(this);
-
+    ui->bPSetting->setCurrentIndex(9);
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
     connect(ui->leftButton, SIGNAL (released()), this, SLOT (leftButton()));
@@ -53,9 +53,6 @@ void MainWindow::makeGraph(Session* s){
     if(this->inSummary == false){
         s->generateData();
     }
-
-
-
     std::map<int, int> data = s->data;
     int i = 0;
     for(auto& p : data){
@@ -65,21 +62,17 @@ void MainWindow::makeGraph(Session* s){
         i++;
 
     }
-
-
-
-        // create graph and assign data to it:
+    // create graph and assign data to it:
     ui->Graphwidget->addGraph();
     ui->Graphwidget->graph(0)->setData(x, y);
 
-        // give the axes some labels:
+    // give the axes some labels:
     ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
     ui->Graphwidget->yAxis->setLabel("Heart Rate");
-        // set axes ranges, so we see all data:
+    // set axes ranges, so we see all data:
     ui->Graphwidget->xAxis->setRange(0, this->session->data.size());
     ui->Graphwidget->yAxis->setRange(0, 100);
     ui->Graphwidget->replot();
-
 }
 
 void MainWindow::newSess(Session* s){
@@ -144,15 +137,12 @@ void MainWindow::showSummary(Session* s){
 
 
     makeGraph(s);
-
-
 }
 
 void MainWindow::initMenus(Menu *m){
     this->settingList.append("CHALLENGE LEVEL");
     this->settingList.append("BREATH PACER SETTINGS");
 
-    //Menu* settings = new Menu("SETTINGS", this->settingList, m);
 
     Menu* newSession = new Menu("START NEW SESSION", this->settingList, m);
     m->addChildMenu(newSession);

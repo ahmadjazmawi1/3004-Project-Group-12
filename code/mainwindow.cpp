@@ -95,8 +95,9 @@ void MainWindow::newSess(Session* s){
     ui->breathPacer->setVisible(true);
     ui->inLabel->setVisible(true);
     ui->outLabel->setVisible(true);
-    connect(breathPTimer, SIGNAL (timeout()), this, SLOT (moveBreathPacer()));
+    ui->breathPacer->setValue(ui->breathPacer->minimum());
     breathPTimer->start(1000);
+    connect(breathPTimer, SIGNAL (timeout()), this, SLOT (moveBreathPacer()));
 }
 
 void MainWindow::deleteSession(Session* s){
@@ -114,8 +115,8 @@ void MainWindow::handleTimeout(){
 }
 void MainWindow::showSummary(Session* s){
     this->graphTimer->stop();
-    this->breathPTimer->stop();
     ui->breathPacer->setValue(ui->breathPacer->minimum());
+    this->breathPTimer->stop();
     this->inSummary = true;
     ui->Graphwidget->clearGraphs();
     ui->Graphwidget->removeGraph(0);
@@ -204,7 +205,8 @@ void MainWindow::changeCL(int c){
     this->session->setChallengeLevel(c);
 }
 void MainWindow::changeBreathPacer(int b){
-    this->currPacer = b;
+    ui->breathPacer->setValue(ui->breathPacer->minimum());
+    this->currPacer = b+1;
 }
 
 void MainWindow::okButton(){
@@ -220,7 +222,6 @@ void MainWindow::okButton(){
         isSession=false;
         MainWindow::updateMenu(this->session->getTime().toString(), {});
         ui->Graphwidget->clearGraphs();
-
         showSummary(this->session);
         return;
     }
@@ -359,7 +360,8 @@ void MainWindow::powerButton(){
         ui->batteryLevel->setVisible(powerStatus);
         ui->mainListWidget->setVisible(powerStatus);
         ui->mainMenu->setVisible(powerStatus);
-        ui->breathPacer->setVisible(powerStatus);
+        //if(powerStatus == false){ui->breathPacer->setVisible(false);}
+        //ui->breathPacer->setVisible(powerStatus);
 }
 
 void MainWindow::ChargeBattery() {
@@ -439,15 +441,17 @@ void MainWindow::ledOff(){
 }
 
 void MainWindow::moveBreathPacer(){
+    ui->breathPacer->setVisible(powerStatus);
     int pace = currPacer;
-    if(pace<2){pace =2;}
-    int max = ui->breathPacer->maximum()/pace;
+    //std::cout<<"check: "<<pace<<endl;
+    float max = ui->breathPacer->value()+ (ui->breathPacer->maximum()/pace);
     if(ui->breathPacer->value()+1 > ui->breathPacer->maximum()){
         ui->breathPacer->setValue(ui->breathPacer->minimum());
     }
     else {
-        ui->breathPacer->setValue((ui->breathPacer->value()+max));
+        ui->breathPacer->setValue((max));
     }
+    //std::cout<<ui->breathPacer->value()<<endl;
 
 }
 

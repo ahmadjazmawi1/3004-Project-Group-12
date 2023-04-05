@@ -478,6 +478,9 @@ border-radius: 20px;
     <property name="whatsThis">
      <string extracomment="Breath Pacer"/>
     </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
@@ -677,7 +680,7 @@ border-radius: 20px;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>35</height>
     </rect>
    </property>
   </widget>

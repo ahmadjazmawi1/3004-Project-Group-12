@@ -651,6 +651,19 @@ border-radius: 20px;
      <string>DEL</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="HR_contact">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>130</y>
+      <width>21</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>HR</string>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -673,6 +686,7 @@ border-radius: 20px;
    <zorder>frame</zorder>
    <zorder>ledIndicator</zorder>
    <zorder>DELETE</zorder>
+   <zorder>HR_contact</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -680,7 +694,7 @@ border-radius: 20px;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>35</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

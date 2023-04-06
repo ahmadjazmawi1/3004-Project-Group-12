@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->breathPacer->setVisible(false);
     ui->inLabel->setVisible(false);
     ui->outLabel->setVisible(false);
+    ui->HR_contact->setVisible(false);
     simTime = new QTimer(this);;
     breathPTimer = new QTimer(this);
     ui->bPSetting->setCurrentIndex(9);

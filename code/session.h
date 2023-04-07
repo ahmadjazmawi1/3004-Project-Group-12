@@ -36,7 +36,8 @@ public:
     QVector<map<int, int>> hrvData;
     int hiOrLo;
     QVector<QVector<double>> coherences2d;    //stores 2 vectors of coherences, one for low and one for high
-
+    QVector<double> x;
+    QVector<double> y;
 
 
 

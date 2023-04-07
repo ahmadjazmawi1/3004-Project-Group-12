@@ -56,12 +56,24 @@ void MainWindow::makeGraph(Session* s){
     }
     std::map<int, int> data = s->data;
     int i = 0;
-    for(auto& p : data){
+    for(auto& p : s->hrvData.at(0)){
         x[i] = p.first;
         y[i] = p.second;
 
         i++;
 
+
+    }
+    s->cohIdx++;
+    if(s->cohIdx > 63){
+
+        for(auto& p : s->hrvData.at(1)){
+            x[i] = p.first;
+            y[i] = p.second;
+
+            i++;
+
+        }
     }
     // create graph and assign data to it:
     ui->Graphwidget->addGraph();
@@ -89,9 +101,9 @@ void MainWindow::newSess(Session* s){
     QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
     ui->achievementLabel->setText(ach);
     this->graphTimer = new QTimer(this);
-    //this->graphTimer->start(1000);
-    connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     this->graphTimer->start(1000);
+    connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
+    //this->graphTimer->start(1000);
 
     ui->breathPacer->setVisible(true);
     ui->inLabel->setVisible(true);

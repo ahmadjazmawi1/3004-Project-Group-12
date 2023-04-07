@@ -50,41 +50,37 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::makeGraph(Session* s){
-    QVector<double> x(100000), y(100000); // initialize with entries 0..100
+
     if(this->inSummary == false){
         s->generateData();
     }
     std::map<int, int> data = s->data;
     int i = 0;
-    for(auto& p : s->hrvData.at(0)){
-        x[i] = p.first;
-        y[i] = p.second;
-
+    for(auto& p : s->hrvData.at(1)){
+        s->x.push_back(i);
+        s->y.push_back(p.second);
         i++;
-
-
     }
     s->cohIdx++;
     if(s->cohIdx > 63){
-
-        for(auto& p : s->hrvData.at(1)){
-            x[i] = p.first;
-            y[i] = p.second;
-
+        for(auto& B : s->hrvData.at(1)){
+            s->x.push_back(s->cohIdx);
+            s->y.push_back(B.second);
             i++;
-
+            s->cohIdx++;
         }
     }
     // create graph and assign data to it:
     ui->Graphwidget->addGraph();
-    ui->Graphwidget->graph(0)->setData(x, y);
+    ui->Graphwidget->graph(0)->setData(s->x, s->y);
 
     // give the axes some labels:
     ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
     ui->Graphwidget->yAxis->setLabel("Heart Rate");
     // set axes ranges, so we see all data:
     ui->Graphwidget->xAxis->setRange(0, this->session->data.size());
-    ui->Graphwidget->yAxis->setRange(0, 100);
+    ui->Graphwidget->yAxis->setRange(40, 100);
+
     ui->Graphwidget->replot();
 }
 

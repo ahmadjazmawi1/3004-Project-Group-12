@@ -7,7 +7,6 @@ using namespace std;
 #include <QStringList>
 #include <QVector>
 #include <QDateTime>
-#include <QElapsedTimer>
 class Session
 {
 public:
@@ -43,10 +42,7 @@ public:
     QVector<double> x;
     QVector<double> y;
     int arrIdx;
-    QTime elTimer;              //elapsed time
-    int hh;
-    int mm;
-    int ss;
+
 
 
 private:
@@ -59,6 +55,7 @@ private:
     int challengeLevel;
     QString coherenceLevel;
     QDateTime startTime;
+
 
 
 };

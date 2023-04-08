@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     simTime = new QTimer(this);;
     breathPTimer = new QTimer(this);
     ui->bPSetting->setCurrentIndex(9);
+
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
     connect(ui->leftButton, SIGNAL (released()), this, SLOT (leftButton()));
@@ -243,10 +244,13 @@ void MainWindow::okButton(){
 
     //starting a new session
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
-
+        ui->HR_contact->setVisible(true);
         this->session = new Session();
+
+        connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
         MainWindow::updateMenu(this->session->getTime().toString(), {});
-        newSess(this->session);
+
+
         this->isSession = true;
 
         return;
@@ -275,6 +279,11 @@ void MainWindow::okButton(){
 
 }
 
+void MainWindow::contactHR(){
+    newSess(this->session);
+
+}
+
 void MainWindow::backButton(){
 
     if(this->inSummary==true){
@@ -287,6 +296,7 @@ void MainWindow::backButton(){
         ui->outLabel->setVisible(false);
         updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
         ui->DELETE->setVisible(false);
+        ui->HR_contact->setVisible(false);
         this->inSummary = false;
     }
     if (masterMenu->getName() == "MAIN MENU") {
@@ -320,6 +330,7 @@ void MainWindow::powerButton(){
         ui->batteryLevel->setVisible(powerStatus);
         ui->mainListWidget->setVisible(powerStatus);
         ui->mainMenu->setVisible(powerStatus);
+
         //if(powerStatus == false){ui->breathPacer->setVisible(false);}
         //ui->breathPacer->setVisible(powerStatus);
 }

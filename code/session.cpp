@@ -29,19 +29,21 @@ Session::Session()
                                {50, 55}, {51, 50}, {52, 70}, {53, 70}, {54, 90}, {55, 80}, {56, 70},
                                {57, 60}, {58, 50}, {59, 70}, {60, 90}, {61, 100}, {62, 90}, {63, 70},
                                {64, 65}};
-    //What I am trying to do:
-    //create a vector that contains maps. we should have an attribute that keeps track of which map we're accessing by the index
+
     this->hrvData.append(this->lowCoherenceData);
     this->hrvData.append(this->highCoherenceData);
     this->cohIdx=0;
-    this->hiOrLo=0;
+    srand((unsigned) time(NULL));
+    this->hiOrLo=0 + (rand() % 2);
     this->coherences2d.append(this->lowCoherences);
     this->coherences2d.append(this->highCoherences);
+    this->arrIdx=0;
+
 
 }
 
 std::map<int, int> Session::generateData(){
-    srand((unsigned) time(NULL));
+
     this->data[data.size()] = 40 + (rand() % 61);
     return this->data;
 

@@ -51,25 +51,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::makeGraph(Session* s){
 
-    if(this->inSummary == false){
+    if(this->inSummary == false){   //only insert values into x and y if we are not in summary view (i.e. in new session)
         s->generateData();
+        if(s->arrIdx==s->hrvData.at(s->hiOrLo).size()){
+                    s->arrIdx=0;    //reset arrIdx to 0 because we need to access elements from the beginning (if not we'd get index out of bounds)
+                }
+        s->x.push_back(s->cohIdx);  //add the cohIdx (current second) to x
+        s->y.push_back(s->hrvData.at(s->hiOrLo).at(s->arrIdx)); //add the heart rate in high coherence HRV map with key arrIdx into y
+
+
+        s->arrIdx++;    //incrementing the key in the map to insert into y
+        s->cohIdx++;    //incrementing cohIdx because it ran for a second
     }
-    std::map<int, int> data = s->data;
-    int i = 0;
-    for(auto& p : s->hrvData.at(1)){
-        s->x.push_back(i);
-        s->y.push_back(p.second);
-        i++;
-    }
-    s->cohIdx++;
-    if(s->cohIdx > 63){
-        for(auto& B : s->hrvData.at(1)){
-            s->x.push_back(s->cohIdx);
-            s->y.push_back(B.second);
-            i++;
-            s->cohIdx++;
-        }
-    }
+
+
+
     // create graph and assign data to it:
     ui->Graphwidget->addGraph();
     ui->Graphwidget->graph(0)->setData(s->x, s->y);
@@ -78,7 +74,7 @@ void MainWindow::makeGraph(Session* s){
     ui->Graphwidget->xAxis->setLabel("Time(Seconds)");
     ui->Graphwidget->yAxis->setLabel("Heart Rate");
     // set axes ranges, so we see all data:
-    ui->Graphwidget->xAxis->setRange(0, this->session->data.size());
+    ui->Graphwidget->xAxis->setRange(0, s->cohIdx-1);
     ui->Graphwidget->yAxis->setRange(40, 100);
 
     ui->Graphwidget->replot();
@@ -220,7 +216,7 @@ void MainWindow::changeBreathPacer(int b){
 
 void MainWindow::okButton(){
 
-    int index = activeQListWidget->currentRow();
+    int index = activeQListWidget->currentRow();    //to keep track of which menu option is currently selected
 
     //ends a session
     if(this->isSession == true){
@@ -237,19 +233,16 @@ void MainWindow::okButton(){
 
     if (index < 0) return;
     QString n = masterMenu->getName();
+
+    //reset option
     if(index == 2 && masterMenu->getName() == "MAIN MENU"){
         allSessions.clear();
         histList.clear();
-        //delete this->session;
+
     }
-    //prevent crash if OK is pressed in challenge level
-    if (masterMenu->getName() == "CHALLENGE LEVEL") {
-        this->currChallenge = index;
-        return;
-    }
+
     //starting a new session
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
-        //activeQListWidget->setCurrentRow(0);
 
         this->session = new Session();
         MainWindow::updateMenu(this->session->getTime().toString(), {});
@@ -258,22 +251,9 @@ void MainWindow::okButton(){
 
         return;
     }
-    //stops the session
-    else if(this->isSession == true){
 
-        //stop the session, i.e., save it to the database and show summary screen
-        this->allSessions.append(this->session);
-        isSession=false;
-        MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});
-        showSummary(allSessions.at(index));
-        return;
-    }
-
-    //showing session dates in HISTORY option
-
+    //showing summary view when clicking on a date in history screen
     else if(masterMenu->getName() == "HISTORY"){
-
-        //masterMenu = masterMenu->get(index);
         this->session = allSessions.at(index);
         QStringList del;
         del.append("DELETE");
@@ -281,47 +261,18 @@ void MainWindow::okButton(){
         connect(ui->DELETE, SIGNAL(released()), this, SLOT(handleDelete()));
 
         MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});
-        //this->isSession = true;
+
         showSummary(allSessions.at(index));
         return;
     }
 
-    else if(masterMenu->getName() == "HISTORY"){
-    }
-    //selects breath pacer settings
-    else if(masterMenu->getName() == "BREATH PACER SETTINGS"){
-        this->currPacer = index;
-        return;
-    }
-
+    //showing session dates in HISTORY option
     else if(masterMenu->get(index)->getName() == "HISTORY"){
         masterMenu = masterMenu->get(index);
         MainWindow::updateMenu(masterMenu->getName(), histList);
 
     }
 
-    //displays challenge level numbers
-    else if(masterMenu->get(index)->getName() == "CHALLENGE LEVEL"){
-        masterMenu = masterMenu->get(index);
-        MainWindow::updateMenu("CHALLENGE LEVEL", this->challengeList);
-    }
-
-    //displays breath pacer numbers
-    else if(masterMenu->get(index)->getName() =="BREATH PACER SETTINGS"){
-        masterMenu = masterMenu->get(index);
-        MainWindow::updateMenu("BREATH PACER SETTINGS", this->breathPList);
-    }
-
-    //if menu is a parent and clicking on it should display more menus
-    else if (masterMenu->get(index)->getMenuItems().length() > 0) {
-
-        for(int i=0;i<3;i++){
-        }
-        masterMenu = masterMenu->get(index);
-
-
-        MainWindow::updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
-    }
 }
 
 void MainWindow::backButton(){
@@ -452,7 +403,6 @@ void MainWindow::ledOff(){
 void MainWindow::moveBreathPacer(){
     ui->breathPacer->setVisible(powerStatus);
     int pace = currPacer;
-    //std::cout<<"check: "<<pace<<endl;
     float max = ui->breathPacer->value()+ (ui->breathPacer->maximum()/pace);
     if(ui->breathPacer->value()+1 > ui->breathPacer->maximum()){
         ui->breathPacer->setValue(ui->breathPacer->minimum());
@@ -460,7 +410,6 @@ void MainWindow::moveBreathPacer(){
     else {
         ui->breathPacer->setValue((max));
     }
-    //std::cout<<ui->breathPacer->value()<<endl;
 
 }
 

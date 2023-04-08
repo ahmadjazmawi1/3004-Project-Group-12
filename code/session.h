@@ -33,11 +33,15 @@ public:
     QVector<double> lowCoherences = {0.509, 0.587, 0.547, 0.599, 0.594, 0.599, 0.596, 0.605, 0.680, 0.612, 0.559, 0.622};       //stores coherence values for low case
     QVector<double> highCoherences = {0.4, 1.5, 2.9, 10.2, 11.1, 9.8, 8.8, 9.0, 9.2, 9.5, 9.8, 9.6};      //stores coherence values for high case
     int cohIdx;     //coherence index, to keep track of whether or not to loop through the values again
-    QVector<map<int, int>> hrvData;
-    int hiOrLo;
+    QVector<map<int, int>> hrvData;         /*stores 2 maps, one for low coherence and one for high coherence.
+    //I did this because if I were to use the individual maps, I'd need if statements every time I want to
+    //decide which map to use based on what type I want to generate. Instead I add the 2 maps to an array and choose the
+    map at the randomly generated index*/
+    int hiOrLo;     //keeps track of whether we should use high or low coherence HRV data. 0 if low, 1 if high
     QVector<QVector<double>> coherences2d;    //stores 2 vectors of coherences, one for low and one for high
     QVector<double> x;
     QVector<double> y;
+    int arrIdx;
 
 
 

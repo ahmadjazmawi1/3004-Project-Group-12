@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->chargeButton, SIGNAL (released()), this, SLOT (ChargeBattery()));
     connect(ui->bPSetting, SIGNAL(activated(int)), this, SLOT(changeBreathPacer(int)));
     connect(ui->CHSetting, SIGNAL(activated(int)), this, SLOT(changeCL(int)));
+    connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
     BatteryLevel = 60;
 
 }
@@ -254,7 +255,7 @@ void MainWindow::okButton(){
 
 
         //this->isSession = true;
-        connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
+
         return;
     }
 
@@ -288,7 +289,7 @@ void MainWindow::contactHR(){
         this->allSessions.append(this->session);
         this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
 
-        isSession=false;
+        this->isSession=false;
         //connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
         MainWindow::updateMenu(this->session->getTime().toString(), {});
         ui->Graphwidget->clearGraphs();

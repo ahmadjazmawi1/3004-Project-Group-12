@@ -38,6 +38,9 @@ Session::Session()
     this->coherences2d.append(this->lowCoherences);
     this->coherences2d.append(this->highCoherences);
     this->arrIdx=0;
+    this->hh=0;
+    this->mm=0;
+    this->ss=0;
 
 
 }

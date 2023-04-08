@@ -98,6 +98,7 @@ void MainWindow::newSess(Session* s){
     this->graphTimer->start(1000);
     connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
     //this->graphTimer->start(1000);
+    //s->elTimer.start();
 
     ui->breathPacer->setVisible(true);
     ui->inLabel->setVisible(true);
@@ -118,6 +119,20 @@ void MainWindow::handleDelete(){
 }
 //only have this function because timeout signal doesnt take parameters, and this is the only way to get around that limitation
 void MainWindow::handleTimeout(){
+    cout << " \n\t\t " <<this->session->hh<<" : "<<this->session->mm<<" : "<<this->session->ss<<endl;
+
+    QString le = "Length\n"+QString::asprintf("%2d:%2d:%2d", this->session->hh, this->session->mm, this->session->ss);
+    ui->lengthLabel->setText(le);
+    this->session->ss++;
+    if(this->session->ss > 59){
+        this->session->mm++;
+        this->session->ss=0;
+    }
+    if(this->session->mm > 59){
+        this->session->hh++;
+        this->session->mm=0;
+    }
+
     makeGraph(this->session);
 }
 void MainWindow::showSummary(Session* s){

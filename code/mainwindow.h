@@ -72,5 +72,6 @@ private slots:
     void handleDelete();
     void changeBreathPacer(int);
     void changeCL(int);
+    void contactHR();
 };
 #endif // MAINWINDOW_H

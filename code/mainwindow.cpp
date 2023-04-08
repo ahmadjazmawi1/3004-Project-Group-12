@@ -219,19 +219,21 @@ void MainWindow::okButton(){
 
     int index = activeQListWidget->currentRow();    //to keep track of which menu option is currently selected
 
-    //ends a session
+
+/*
     if(this->isSession == true){
 
         this->allSessions.append(this->session);
         this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
 
         isSession=false;
+        //connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
         MainWindow::updateMenu(this->session->getTime().toString(), {});
         ui->Graphwidget->clearGraphs();
         showSummary(this->session);
         return;
     }
-
+*/
     if (index < 0) return;
     QString n = masterMenu->getName();
 
@@ -247,12 +249,12 @@ void MainWindow::okButton(){
         ui->HR_contact->setVisible(true);
         this->session = new Session();
 
-        connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
+
         MainWindow::updateMenu(this->session->getTime().toString(), {});
 
 
-        this->isSession = true;
-
+        //this->isSession = true;
+        connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
         return;
     }
 
@@ -280,7 +282,24 @@ void MainWindow::okButton(){
 }
 
 void MainWindow::contactHR(){
-    newSess(this->session);
+    //ends a session
+    if(this->isSession == true){
+
+        this->allSessions.append(this->session);
+        this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
+
+        isSession=false;
+        //connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
+        MainWindow::updateMenu(this->session->getTime().toString(), {});
+        ui->Graphwidget->clearGraphs();
+        showSummary(this->session);
+        return;
+    }else{
+    //HR contact found start session
+      newSess(this->session);
+      this->isSession = true; //set session to true
+}
+
 
 }
 

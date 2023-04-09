@@ -516,7 +516,7 @@ border-radius: 20px;
      <rect>
       <x>370</x>
       <y>130</y>
-      <width>71</width>
+      <width>61</width>
       <height>41</height>
      </rect>
     </property>
@@ -533,9 +533,9 @@ border-radius: 20px;
    <widget class="QLabel" name="lengthLabel">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>470</x>
       <y>130</y>
-      <width>51</width>
+      <width>41</width>
       <height>41</height>
      </rect>
     </property>
@@ -552,7 +552,7 @@ border-radius: 20px;
    <widget class="QLabel" name="achievementLabel">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>640</x>
       <y>130</y>
       <width>81</width>
       <height>41</height>
@@ -655,13 +655,39 @@ border-radius: 20px;
     <property name="geometry">
      <rect>
       <x>720</x>
-      <y>130</y>
+      <y>120</y>
       <width>21</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>HR</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="avgCoherence">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>125</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>140</y>
+      <width>121</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
    <zorder>label_7</zorder>
@@ -687,6 +713,8 @@ border-radius: 20px;
    <zorder>ledIndicator</zorder>
    <zorder>DELETE</zorder>
    <zorder>HR_contact</zorder>
+   <zorder>avgCoherence</zorder>
+   <zorder>label_3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

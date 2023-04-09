@@ -157,9 +157,12 @@ void MainWindow::showSummary(Session* s){
     ui->Graphwidget->setVisible(true);
 
     ui->Graphwidget->setVisible(true);
-    ui->coherenceLabel->setVisible(true);
-    QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
-    ui->coherenceLabel->setText(co);
+    ui->coherenceLabel->setVisible(false);
+    ui->avgCoherence->setVisible(true);
+    QString avg = "Avg Coherence\n" + QString::asprintf("  %0.2f", s->achievement/s->numCoh);
+    ui->avgCoherence->setText(avg);
+    //QString co = "Coherence\n"+QString::asprintf("f", s->currCoherence);
+    //ui->coherenceLabel->setText(co);
     QString le = "Length\n"+QString::asprintf("%0.2f", s->getLength());
     ui->lengthLabel->setVisible(true);
     ui->lengthLabel->setText(le);
@@ -479,6 +482,7 @@ void MainWindow::populateMetrics(Session* s){
        s->currIndex++;
        s->currCoherence=s->coherences2d[s->hiOrLo][s->currIndex];
        s->achievement+=s->coherences2d[s->hiOrLo][s->currIndex];
+       s->numCoh++;
        QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
        ui->coherenceLabel->setText(co);
 

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->graphTimer = new QTimer(this);
     this->dataTimer  = new QTimer(this);
+    this->metricsTimer = new QTimer(this);
 
     initMenus(masterMenu);
     ui->Graphwidget->setVisible(false);
@@ -100,6 +101,10 @@ void MainWindow::newSess(Session* s){
     //this->graphTimer->start(1000);
     //s->elTimer.start();
 
+    this->metricsTimer = new QTimer(this);
+    this->metricsTimer->start(6000);
+    connect(this->metricsTimer, SIGNAL(timeout()), this, SLOT(handlePopulateMetrics()));
+
     ui->breathPacer->setVisible(true);
     ui->inLabel->setVisible(true);
     ui->outLabel->setVisible(true);
@@ -135,6 +140,11 @@ void MainWindow::handleTimeout(){
 
     makeGraph(this->session);
 }
+
+void MainWindow::handlePopulateMetrics(){
+    populateMetrics(this->session);
+}
+
 void MainWindow::showSummary(Session* s){
     this->graphTimer->stop();
     ui->breathPacer->setValue(ui->breathPacer->minimum());
@@ -304,6 +314,8 @@ void MainWindow::contactHR(){
         this->allSessions.append(this->session);
         this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
 
+        ledOff();
+        this->metricsTimer->stop();
         this->isSession=false;
         //connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
         MainWindow::updateMenu(this->session->getTime().toString(), {});
@@ -456,6 +468,35 @@ void MainWindow::moveBreathPacer(){
     else {
         ui->breathPacer->setValue((max));
     }
+
+}
+
+void MainWindow::populateMetrics(Session* s){
+       if(s->currIndex==s->lowCoherences.size()-1){
+           s->currIndex=0;
+       }
+
+       s->currIndex++;
+       s->currCoherence=s->coherences2d[s->hiOrLo][s->currIndex];
+       s->achievement+=s->coherences2d[s->hiOrLo][s->currIndex];
+       QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
+       ui->coherenceLabel->setText(co);
+
+       QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
+       ui->achievementLabel->setText(ach);
+
+       if(s->currCoherence<0.5){
+           ledRed();
+           cout << "BEEP! Low coherence reached" <<endl;
+       }
+       if(s->currCoherence>0.5 && s->currCoherence<1){
+           ledBlue();
+           cout << "BEEP! Medium coherence reached" <<endl;
+       }
+       if(s->currCoherence>=1){
+           ledGreen();
+           cout << "BEEP! High coherence reached" <<endl;
+       }
 
 }
 

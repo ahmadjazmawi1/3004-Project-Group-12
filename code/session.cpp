@@ -41,6 +41,7 @@ Session::Session()
     this->hh=0;
     this->mm=0;
     this->ss=0;
+    this->currIndex=0;
 
 
 }

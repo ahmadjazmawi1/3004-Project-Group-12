@@ -28,10 +28,13 @@ public:
     QDateTime getTime();
     void setChallengeLevel(int);
     double currCoherence;
+    //index used to iterate throught the values. index only changes after every call to populateMetrics function
+    int currIndex;
+    double achievement;
     std::map<int, int> lowCoherenceData;    //stores HRV data for low case
 
     std::map<int, int> highCoherenceData;   //stores HRV data for high case
-    QVector<double> lowCoherences = {0.509, 0.587, 0.547, 0.599, 0.594, 0.599, 0.596, 0.605, 0.680, 0.612, 0.559, 0.622};       //stores coherence values for low case
+    QVector<double> lowCoherences = {0.509, 0.587, 1.3, 0.599, 0.594, 0.3, 0.596, 0.605, 0.680, 0.612, 0.559, 0.622};       //stores coherence values for low case
     QVector<double> highCoherences = {0.4, 1.5, 2.9, 10.2, 11.1, 9.8, 8.8, 9.0, 9.2, 9.5, 9.8, 9.6};      //stores coherence values for high case
     int cohIdx;     //coherence index, to keep track of whether or not to loop through the values again
     QVector<map<int, int>> hrvData;         /*stores 2 maps, one for low coherence and one for high coherence.
@@ -53,7 +56,6 @@ private:
 
     double totalCoherence;
     double length;
-    double achievement;
     int avgCoherence;
     QVector<int> timeInCoherenceLevel;    //stores the length of time in each coherence level. index 0 is for level 1, index 1 is for level 2, and so on
     int challengeLevel;

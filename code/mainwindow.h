@@ -83,6 +83,7 @@ public:
     void initMenus(Menu*);
     void updateMenu(const QString, const QStringList);
     void BatLevel(double batLevel);
+    void populateMetrics(Session* s);
 
 private:
     Ui::MainWindow *ui;
@@ -102,6 +103,7 @@ private:
     bool inSummary=false;
     QTimer *graphTimer;         //graphs the data every second
     QTimer *dataTimer;          //generates 1 data value every second
+    QTimer *metricsTimer;
 
     int BatteryLevel;
     QTimer *simTime;
@@ -132,6 +134,7 @@ private slots:
     void moveBreathPacer();
     void deleteSession(Session*);
     void handleDelete();
+    void handlePopulateMetrics();
     void changeBreathPacer(int);
     void changeCL(int);
     void contactHR();

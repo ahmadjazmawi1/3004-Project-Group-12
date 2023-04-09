@@ -50,13 +50,15 @@ public:
     int hh;
     int mm;
     int ss;
+    double avgCoherence;
+    int numCoh;     //keeps track of the number of times coherence level is calculated. Used to find the average coherence by dividing achievement by it
 
 
 private:
 
     double totalCoherence;
     double length;
-    int avgCoherence;
+
     QVector<int> timeInCoherenceLevel;    //stores the length of time in each coherence level. index 0 is for level 1, index 1 is for level 2, and so on
     int challengeLevel;
     QString coherenceLevel;

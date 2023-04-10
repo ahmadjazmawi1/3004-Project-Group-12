@@ -12,17 +12,17 @@
  * Data Members
  * Menu* masterMenu;
     Menu* mainMenu;
-    QListWidget *activeQListWidget;
+    QListWidget *activeQListWidget; keeps track of the currently selected widget in the list
     QStringList breathPList;
     QStringList settingList;
     QStringList challengeList;
-    QStringList histList;
+    QStringList histList;   //stores the dates for sessions, to be used in the history screen to show the dates of sessions
     int currChallenge=1;
     int currPacer=10; speed of the pacer based on what is elected by the user
     bool powerStatus: used to check power status
     bool isSession=false: this will allow use to stop and start a new session based on what the previous functionality set the this variable as we have on HR button so of pressed tice the session is set to fall meaning we no longer have HR contact
     Session *session: session used to create a new session start the graph
-    QVector<Session*> allSessions;
+    QVector<Session*> allSessions;  Stores the session objects that were created for use in history
     bool inSummary=false;
     QTimer *graphTimer:  graphs the data every second
     QTimer *dataTimer :generates 1 data value every second
@@ -44,16 +44,16 @@
 
    private:
 
-    void upButton();
-    void downButton();
+    void upButton();    enables movement to the menu option above
+    void downButton();  enables movement to the menu option below
     void leftButton();
     void rightButton();
     void okButton(): enables the movements from one main menu to the child menus
     void backButton(): allow us to go back to the menu mainly after entering new session after the session paused ONlY
     void powerButton(): turn the machine on and off
     void makeGraph(Session*): makes the graph
-    void showSummary(Session*):
-    void handleTimeout();
+    void showSummary(Session*): shows the summary
+    void handleTimeout();  handler for the makeGraph function since the timeout SLOT doesnt take parameters
     void ChargeBattery(): charges battery to 100%
     void useBattery(): uses timer that decreases the battery at a stable interval
     void newSess(Session*): starts a new session strarts the graph timer breath pacer timer
@@ -63,9 +63,9 @@
     void ledOff();initially off this will change when a shows coherence level is hit
     void moveBreathPacer(); moves the breath pacer based on the time selected by the user
     void deleteSession(Session*); deletes the session
-    void handleDelete();
-    void changeBreathPacer(int);
-    void changeCL(int);
+    void handleDelete(); handler for the deleteSession function since the released SLOT doesnt take parameters
+    void changeBreathPacer(int); connected to the breath pacer dropdown, stores the new value selected
+    void changeCL(int); connected to challenge level dropdown, stores the new value selected
     void contactHR(): starts the session when HR contact is found
 
 */
@@ -90,9 +90,7 @@ private:
     Menu* masterMenu;
     Menu* mainMenu;
     QListWidget *activeQListWidget;
-    QStringList breathPList;
-    QStringList settingList;
-    QStringList challengeList;
+
     QStringList histList;
     int currChallenge=1;
     int currPacer=10;
@@ -108,7 +106,7 @@ private:
     int BatteryLevel;
     QTimer *simTime;
     QTimer *breathPTimer;
-
+    bool secondHR;
 
 
 

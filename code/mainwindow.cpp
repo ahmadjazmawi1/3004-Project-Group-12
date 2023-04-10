@@ -3,6 +3,7 @@
 using namespace std;
 #include <iostream>
 #include <unistd.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -14,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     activeQListWidget->setCurrentRow(0);
 
     this->graphTimer = new QTimer(this);
-    this->dataTimer  = new QTimer(this);
+
     this->metricsTimer = new QTimer(this);
 
     initMenus(masterMenu);
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     simTime = new QTimer(this);;
     breathPTimer = new QTimer(this);
     ui->bPSetting->setCurrentIndex(9);
-
+    //this->secondHR=true;
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
     connect(ui->leftButton, SIGNAL (released()), this, SLOT (leftButton()));
@@ -48,15 +49,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->bPSetting, SIGNAL(activated(int)), this, SLOT(changeBreathPacer(int)));
     connect(ui->CHSetting, SIGNAL(activated(int)), this, SLOT(changeCL(int)));
     connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
+
+
     BatteryLevel = 60;
 
 }
 
 void MainWindow::makeGraph(Session* s){
 
-    if(this->inSummary == false){   //only insert values into x and y if we are not in summary view (i.e. in new session)
-        s->generateData();
-        if(s->arrIdx==s->hrvData.at(s->hiOrLo).size()){
+    if(this->inSummary == false){   //only insert values into x and y if we are not in summary view (i.e. we're in new session)
+
+        if(s->arrIdx==s->hrvData.at(s->hiOrLo).size()){ //check if we need to repeat HRV data from beginning
                     s->arrIdx=0;    //reset arrIdx to 0 because we need to access elements from the beginning (if not we'd get index out of bounds)
                 }
         s->x.push_back(s->cohIdx);  //add the cohIdx (current second) to x
@@ -84,30 +87,34 @@ void MainWindow::makeGraph(Session* s){
 }
 
 void MainWindow::newSess(Session* s){
+    //enabling widgets on new session screen
     ui->Graphwidget->setVisible(true);
     ui->coherenceLabel->setVisible(true);
+    ui->avgCoherence->setVisible(false);
+    ui->lengthLabel->setVisible(true);
+    ui->achievementLabel->setVisible(true);
+    ui->breathPacer->setVisible(true);
+    ui->inLabel->setVisible(true);
+    ui->outLabel->setVisible(true);
+
+    //initializing labels
     QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
     ui->coherenceLabel->setText(co);
-    QString le = "Length\n"+QString::asprintf("%0.2f", s->getLength());
-    ui->lengthLabel->setVisible(true);
+    QString le = "Length\n"+QString::asprintf("%2d:%2d:%2d", this->session->hh, this->session->mm, this->session->ss);
     ui->lengthLabel->setText(le);
-
-    ui->achievementLabel->setVisible(true);
     QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
     ui->achievementLabel->setText(ach);
+
+    //setting up timers
     this->graphTimer = new QTimer(this);
     this->graphTimer->start(1000);
     connect(this->graphTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
-    //this->graphTimer->start(1000);
-    //s->elTimer.start();
+
 
     this->metricsTimer = new QTimer(this);
     this->metricsTimer->start(6000);
     connect(this->metricsTimer, SIGNAL(timeout()), this, SLOT(handlePopulateMetrics()));
 
-    ui->breathPacer->setVisible(true);
-    ui->inLabel->setVisible(true);
-    ui->outLabel->setVisible(true);
     ui->breathPacer->setValue(ui->breathPacer->minimum());
     breathPTimer->start(1000);
     connect(breathPTimer, SIGNAL (timeout()), this, SLOT (moveBreathPacer()));
@@ -124,7 +131,7 @@ void MainWindow::handleDelete(){
 }
 //only have this function because timeout signal doesnt take parameters, and this is the only way to get around that limitation
 void MainWindow::handleTimeout(){
-    cout << " \n\t\t " <<this->session->hh<<" : "<<this->session->mm<<" : "<<this->session->ss<<endl;
+
 
     QString le = "Length\n"+QString::asprintf("%2d:%2d:%2d", this->session->hh, this->session->mm, this->session->ss);
     ui->lengthLabel->setText(le);
@@ -146,57 +153,49 @@ void MainWindow::handlePopulateMetrics(){
 }
 
 void MainWindow::showSummary(Session* s){
+    this->secondHR=false;
     this->graphTimer->stop();
     ui->breathPacer->setValue(ui->breathPacer->minimum());
     this->breathPTimer->stop();
     this->inSummary = true;
-    ui->Graphwidget->clearGraphs();
-    ui->Graphwidget->removeGraph(0);
 
-
-    ui->Graphwidget->setVisible(true);
-
+    //make widgets/labels visible
     ui->Graphwidget->setVisible(true);
     ui->coherenceLabel->setVisible(false);
     ui->avgCoherence->setVisible(true);
-    QString avg = "Avg Coherence\n" + QString::asprintf("  %0.2f", s->achievement/s->numCoh);
-    ui->avgCoherence->setText(avg);
-    //QString co = "Coherence\n"+QString::asprintf("f", s->currCoherence);
-    //ui->coherenceLabel->setText(co);
-    QString le = "Length\n"+QString::asprintf("%0.2f", s->getLength());
     ui->lengthLabel->setVisible(true);
+    ui->achievementLabel->setVisible(true);
+
+    //initialize label text
+    QString avg = "Avg Coherence\n" + QString::asprintf("  %0.3f", s->achievement/s->numCoh);
+    ui->avgCoherence->setText(avg);
+
+    QString le = "Length\n"+QString::asprintf("%2d:%2d:%2d", this->session->hh, this->session->mm, this->session->ss-1);
     ui->lengthLabel->setText(le);
 
-    ui->achievementLabel->setVisible(true);
-    QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
+    QString ach = "Achievement\n"+QString::asprintf("%0.3f", s->getAchievement());
     ui->achievementLabel->setText(ach);
 
-
+    //make the graph, but this time dont add new values to x and y axis
     makeGraph(s);
 }
 
 void MainWindow::initMenus(Menu *m){
-    this->settingList.append("CHALLENGE LEVEL");
-    this->settingList.append("BREATH PACER SETTINGS");
+    Menu* newSession = new Menu("START NEW SESSION", {}, m);    //newSession menu created with masterMenu as its parent
+    m->addChildMenu(newSession);                                //adding newSession as a child of masterMenu
 
 
-    Menu* newSession = new Menu("START NEW SESSION", this->settingList, m);
-    m->addChildMenu(newSession);
-
-
-
-    //*******************HISTORY**********************
     QStringList historyList;
     for(int i=0;i<this->allSessions.size();i++){
-        historyList.append(this->allSessions.at(i)->getTime().toString("h:mm:ss ap"));
+        historyList.append(this->allSessions.at(i)->getTime().toString("h:mm:ss ap"));  //appending the dates for all sessions
     }
-    Menu* history = new Menu("HISTORY", histList, m);
-    m->addChildMenu(history);
+    Menu* history = new Menu("HISTORY", histList, m);   //creating history menu with masterMenu as parent
+    m->addChildMenu(history);                           //adding history as child of masterMenu
     for(int i=0;i<this->allSessions.size();i++){
-        history->addChildMenu(new Menu(this->allSessions.at(i)->getTime().toString("h:mm ap"), {}, history));
+        history->addChildMenu(new Menu(this->allSessions.at(i)->getTime().toString("h:mm ap"), {}, history)); //creating date menus with history as the parent
     }
-    Menu* reset = new Menu("RESET", {}, m);
-    m->addChildMenu(reset);
+    Menu* reset = new Menu("RESET", {}, m);             //creating reset menu with masterMenu as parent
+    m->addChildMenu(reset);                             //adding reset as child of masterMenu
 
 
 }
@@ -208,6 +207,7 @@ MainWindow::~MainWindow()
 void MainWindow::upButton(){
     int nextIndex = activeQListWidget->currentRow() - 1;
 
+    //the case where the user presses up while currently hovering over the first menu option, changes the current option to the last one
     if (nextIndex < 0) {
         nextIndex = activeQListWidget->count() - 1;
     }
@@ -219,6 +219,7 @@ void MainWindow::upButton(){
 void MainWindow::downButton(){
     int nextIndex = activeQListWidget->currentRow() + 1;
 
+    //the case where the user presses down while currently hovering over the last menu option, changes the current option to the first one
     if (nextIndex > activeQListWidget->count() - 1) {
         nextIndex = 0;
     }
@@ -248,25 +249,11 @@ void MainWindow::okButton(){
 
     int index = activeQListWidget->currentRow();    //to keep track of which menu option is currently selected
 
-
-/*
-    if(this->isSession == true){
-
-        this->allSessions.append(this->session);
-        this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
-
-        isSession=false;
-        //connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
-        MainWindow::updateMenu(this->session->getTime().toString(), {});
-        ui->Graphwidget->clearGraphs();
-        showSummary(this->session);
-        return;
-    }
-*/
-    if (index < 0) return;
     QString n = masterMenu->getName();
-
-    //reset option
+    //in case user presses ok in an empty screen
+    if(index < 0)
+        return;
+    //reset option. clears the vector containing session objects and the vector containing session dates
     if(index == 2 && masterMenu->getName() == "MAIN MENU"){
         allSessions.clear();
         histList.clear();
@@ -277,65 +264,62 @@ void MainWindow::okButton(){
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
         ui->HR_contact->setVisible(true);
         this->session = new Session();
-
-
-        MainWindow::updateMenu(this->session->getTime().toString(), {});
-
-
-        //this->isSession = true;
-
+        this->secondHR=true;
+        MainWindow::updateMenu(this->session->getTime().toString(), {});    //clears the menu options from the screen
         return;
     }
 
     //showing summary view when clicking on a date in history screen
-    else if(masterMenu->getName() == "HISTORY"){
+    else if(masterMenu->getName() == "HISTORY"){        //checks if user clicked ok on a date by checking if parent menu is
+                                                        //HISTORY. had to do this because history doesnt have child menus since
+                                                        //history is generated when a session ends. at the beginning theres no
+                                                        //history. Thus to avoid causing a seg fault, I check if parent is HSITORY
         this->session = allSessions.at(index);
-        QStringList del;
-        del.append("DELETE");
         ui->DELETE->setVisible(true);
         connect(ui->DELETE, SIGNAL(released()), this, SLOT(handleDelete()));
 
-        MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});
+        MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});    //clears the menu options from th screen
 
-        showSummary(allSessions.at(index));
+        showSummary(allSessions.at(index)); //show the summary screen for the selected session
         return;
     }
 
     //showing session dates in HISTORY option
-    else if(masterMenu->get(index)->getName() == "HISTORY"){
+    else if(masterMenu->get(index)->getName() == "HISTORY"){    //checks if use clicked ok on history option by checking if
+                                                                //child menu at index is HISTORY
         masterMenu = masterMenu->get(index);
-        MainWindow::updateMenu(masterMenu->getName(), histList);
+        MainWindow::updateMenu(masterMenu->getName(), histList); //clears the menu options from th screen and adds session dates
 
     }
 
 }
 
 void MainWindow::contactHR(){
+
     //ends a session
     if(this->isSession == true){
 
-        this->allSessions.append(this->session);
-        this->histList.append(this->session->getTime().toString("h:mm:ss ap"));
+        this->allSessions.append(this->session);    //add the session to the array of sessions (used for history)
+        this->histList.append(this->session->getTime().toString("h:mm:ss ap")); //add the date of the session to the array of dates
 
         ledOff();
         this->metricsTimer->stop();
-        this->isSession=false;
-        //connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
-        MainWindow::updateMenu(this->session->getTime().toString(), {});
-        ui->Graphwidget->clearGraphs();
+        this->isSession=false;      //set isSession to false, because the session is over
+
         showSummary(this->session);
+        //ui->HR_contact->setVisible(false);  //uncomment if Voja says he likes it and its good with the specs
         return;
     }else{
-    //HR contact found start session
-      newSess(this->session);
-      this->isSession = true; //set session to true
-}
+        //HR contact found start session
+        newSess(this->session);
+        this->isSession = true; //set session to true
+    }
 
 
 }
 
 void MainWindow::backButton(){
-
+    //if we're in the summary screen, hide everything and add the master menu options back
     if(this->inSummary==true){
         ui->Graphwidget->setVisible(false);
         ui->coherenceLabel->setVisible(false);
@@ -344,19 +328,23 @@ void MainWindow::backButton(){
         ui->breathPacer->setVisible(false);
         ui->inLabel->setVisible(false);
         ui->outLabel->setVisible(false);
-        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+        ui->avgCoherence->setVisible(false);
         ui->DELETE->setVisible(false);
         ui->HR_contact->setVisible(false);
+        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+
         this->inSummary = false;
     }
+
+    //to avoid crashing the device
     if (masterMenu->getName() == "MAIN MENU") {
         activeQListWidget->setCurrentRow(0);
     }
+    //for returning from newSession to main menu
     else {
         masterMenu = masterMenu->getParent();
-        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());  //clear the screen and add main menu options
     }
-
 
 }
 
@@ -364,14 +352,12 @@ void MainWindow::backButton(){
 
 void MainWindow::powerButton(){
 
-
         if(powerStatus==false && BatteryLevel > 0){
             powerStatus=true;
             ui->screenDisplay->setStyleSheet("background-color: white");
 
-
-                simTime->start(10000);
-                connect(simTime, SIGNAL (timeout()), this, SLOT (useBattery()));
+            simTime->start(10000);
+            connect(simTime, SIGNAL (timeout()), this, SLOT (useBattery()));
 
         }else{
             powerStatus=false;
@@ -381,8 +367,7 @@ void MainWindow::powerButton(){
         ui->mainListWidget->setVisible(powerStatus);
         ui->mainMenu->setVisible(powerStatus);
 
-        //if(powerStatus == false){ui->breathPacer->setVisible(false);}
-        //ui->breathPacer->setVisible(powerStatus);
+
 }
 
 void MainWindow::ChargeBattery() {
@@ -483,10 +468,10 @@ void MainWindow::populateMetrics(Session* s){
        s->currCoherence=s->coherences2d[s->hiOrLo][s->currIndex];
        s->achievement+=s->coherences2d[s->hiOrLo][s->currIndex];
        s->numCoh++;
-       QString co = "Coherence\n"+QString::asprintf("%0.2f", s->currCoherence);
+       QString co = "Coherence\n"+QString::asprintf("%0.3f", s->currCoherence);
        ui->coherenceLabel->setText(co);
 
-       QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
+       QString ach = "Achievement\n"+QString::asprintf("%0.3f", s->getAchievement());
        ui->achievementLabel->setText(ach);
 
        if(s->currCoherence<0.5){

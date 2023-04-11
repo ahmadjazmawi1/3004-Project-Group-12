@@ -43,6 +43,10 @@ Session::Session()
     this->ss=0;
     this->currIndex=0;
     this->numCoh=0;
+    this->highPercentage=0;
+    this->medPercentage=0;
+    this->lowPercentage=0;
+    this->secondsCounter=0;
 
 
 }

@@ -31,6 +31,10 @@ using namespace std;
     int mm:                 stores number of minutes the device has been running for, used for length label
     int ss:                 stores the number of seconds the device has been running for, used for length label
     double avgCoherence:    stores the average coherence score for use in the summary view
+    double percentageHigh:  counter for the amount of time the coherence was high during the session
+    double percentageMed:   counter for the amount of time the coherence was medium during the session
+    double percentageLow:   counter for the amount of time the coherence was low during the session
+    double secondsCounter:  counter for the amount of times populateMetrics is called
     int numCoh:             stores the number of coherence scores that have been graphed, to calculate average coherence
     QVector<int> timeInCoherenceLevel:  stores the length of time in each coherence level. index 0 is for level 1, index 1 is for level 2, and so on
     int challengeLevel;
@@ -75,6 +79,10 @@ public:
     int mm;
     int ss;
     double avgCoherence;
+    double highPercentage;
+    double medPercentage;
+    double lowPercentage;
+    double secondsCounter;
     int numCoh;
 
 private:

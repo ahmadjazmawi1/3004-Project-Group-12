@@ -91,6 +91,9 @@ void MainWindow::newSess(Session* s){
     ui->Graphwidget->setVisible(true);
     ui->coherenceLabel->setVisible(true);
     ui->avgCoherence->setVisible(false);
+    ui->percentageHigh->setVisible(false);
+    ui->percentageMed->setVisible(false);
+    ui->percentageLow->setVisible(false);
     ui->lengthLabel->setVisible(true);
     ui->achievementLabel->setVisible(true);
     ui->breathPacer->setVisible(true);
@@ -104,6 +107,7 @@ void MainWindow::newSess(Session* s){
     ui->lengthLabel->setText(le);
     QString ach = "Achievement\n"+QString::asprintf("%0.2f", s->getAchievement());
     ui->achievementLabel->setText(ach);
+
 
     //setting up timers
     this->graphTimer = new QTimer(this);
@@ -163,6 +167,9 @@ void MainWindow::showSummary(Session* s){
     ui->Graphwidget->setVisible(true);
     ui->coherenceLabel->setVisible(false);
     ui->avgCoherence->setVisible(true);
+    ui->percentageHigh->setVisible(true);
+    ui->percentageMed->setVisible(true);
+    ui->percentageLow->setVisible(true);
     ui->lengthLabel->setVisible(true);
     ui->achievementLabel->setVisible(true);
 
@@ -173,8 +180,21 @@ void MainWindow::showSummary(Session* s){
     QString le = "Length\n"+QString::asprintf("%2d:%2d:%2d", this->session->hh, this->session->mm, this->session->ss-1);
     ui->lengthLabel->setText(le);
 
-    QString ach = "Achievement\n"+QString::asprintf("%0.3f", s->getAchievement());
+    QString ach = "Achievement\n"+QString::asprintf("%0.1f", s->getAchievement());
     ui->achievementLabel->setText(ach);
+
+    QString high = "High\n" + QString::asprintf("  %0.1f", (s->highPercentage/s->secondsCounter)*100) + "%";
+    ui->percentageHigh->setText(high);
+
+    QString med = "Med\n" + QString::asprintf("  %0.1f", (s->medPercentage/s->secondsCounter)*100) + "%";
+    ui->percentageMed->setText(med);
+
+    QString low = "Low\n" + QString::asprintf("  %0.1f", (s->lowPercentage/s->secondsCounter)*100) + "%";
+    ui->percentageLow->setText(low);
+
+
+
+
 
     //make the graph, but this time dont add new values to x and y axis
     makeGraph(s);
@@ -329,6 +349,9 @@ void MainWindow::backButton(){
         ui->inLabel->setVisible(false);
         ui->outLabel->setVisible(false);
         ui->avgCoherence->setVisible(false);
+        ui->percentageHigh->setVisible(false);
+        ui->percentageMed->setVisible(false);
+        ui->percentageLow->setVisible(false);
         ui->DELETE->setVisible(false);
         ui->HR_contact->setVisible(false);
         updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
@@ -460,6 +483,8 @@ void MainWindow::moveBreathPacer(){
 }
 
 void MainWindow::populateMetrics(Session* s){
+        s->secondsCounter+=1;
+
        if(s->currIndex==s->lowCoherences.size()-1){
            s->currIndex=0;
        }
@@ -477,14 +502,17 @@ void MainWindow::populateMetrics(Session* s){
        if(s->currCoherence<0.5){
            ledRed();
            cout << "BEEP! Low coherence reached" <<endl;
+           s->lowPercentage+=1;
        }
        if(s->currCoherence>0.5 && s->currCoherence<1){
            ledBlue();
            cout << "BEEP! Medium coherence reached" <<endl;
+            s->medPercentage+=1;
        }
        if(s->currCoherence>=1){
            ledGreen();
            cout << "BEEP! High coherence reached" <<endl;
+            s->highPercentage+=1;
        }
 
 }

@@ -655,7 +655,7 @@ border-radius: 20px;
     <property name="geometry">
      <rect>
       <x>720</x>
-      <y>120</y>
+      <y>130</y>
       <width>21</width>
       <height>20</height>
      </rect>
@@ -690,6 +690,54 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="percentageHigh">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>130</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="percentageMed">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>130</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="percentageLow">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>130</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+    </property>
+   </widget>
    <zorder>label_7</zorder>
    <zorder>label</zorder>
    <zorder>screenDisplay</zorder>
@@ -715,6 +763,9 @@ border-radius: 20px;
    <zorder>HR_contact</zorder>
    <zorder>avgCoherence</zorder>
    <zorder>label_3</zorder>
+   <zorder>percentageHigh</zorder>
+   <zorder>percentageMed</zorder>
+   <zorder>percentageLow</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -498,22 +498,29 @@ void MainWindow::moveBreathPacer(){
 }
 
 void MainWindow::populateMetrics(Session* s){
+        //used to count time to calculate percentage
         s->secondsCounter+=1;
 
+       //if index reaches end. loop back to begininnig
        if(s->currIndex==s->lowCoherences.size()-1){
            s->currIndex=0;
        }
 
+       //display currrent value of the  coherence vector
+       //then move index for next time function is called
        s->currIndex++;
        s->currCoherence=s->coherences2d[s->hiOrLo][s->currIndex];
        s->achievement+=s->coherences2d[s->hiOrLo][s->currIndex];
        s->numCoh++;
+
+       //populating labels
        QString co = "Coherence\n"+QString::asprintf("%0.3f", s->currCoherence);
        ui->coherenceLabel->setText(co);
 
        QString ach = "Achievement\n"+QString::asprintf("%0.3f", s->getAchievement());
        ui->achievementLabel->setText(ach);
 
+       //lights and beeps based on coherence levels
        if(s->currCoherence<0.5){
            ledRed();
            cout << "BEEP! Low coherence reached" <<endl;
@@ -528,6 +535,7 @@ void MainWindow::populateMetrics(Session* s){
            ledGreen();
            cout << "BEEP! High coherence reached" <<endl;
             s->highPercentage+=1;
+
        }
 
 }

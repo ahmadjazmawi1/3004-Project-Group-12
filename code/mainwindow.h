@@ -41,6 +41,7 @@
     void initMenus(Menu*): is the main master menu holds all the other child menus in them this where we initialize all other child menus functionality
     void updateMenu(const QString, const QStringList); This function is used mainly to update our menus based on what the user dose
     void BatLevel(double batLevel): this hold the functionality for the battery depressing and charging and change the variable that holds the battery variable
+    void populateMetrics(Session* s); This populates/calculates the coherence and achievement values. Making sure to call the right functions for LED lights as well.
 
    private:
 

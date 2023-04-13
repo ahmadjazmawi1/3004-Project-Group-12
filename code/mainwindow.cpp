@@ -381,6 +381,8 @@ void MainWindow::powerButton(){
             powerStatus=true;
             if(ui->Graphwidget->isVisible() || ui->bPSetting->isVisible()){
                 ui->breathPacer->setVisible(powerStatus);
+                ui->outLabel->setVisible(powerStatus);
+                ui->inLabel->setVisible(powerStatus);
             }
             ui->screenDisplay->setStyleSheet("background-color: white");
 
@@ -394,6 +396,8 @@ void MainWindow::powerButton(){
             }
             if(ui->breathPacer->isVisible()){
                  ui->breathPacer->setVisible(powerStatus);
+                 ui->outLabel->setVisible(powerStatus);
+                 ui->inLabel->setVisible(powerStatus);
             }
             if(ui->DELETE->isVisible()){
                 ui->DELETE->setVisible(powerStatus);

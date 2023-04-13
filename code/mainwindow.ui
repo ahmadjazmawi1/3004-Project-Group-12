@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="uiBackground">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -25,19 +25,6 @@
     </property>
     <property name="styleSheet">
      <string notr="true">image: url(:/res/overlay/Buttonless.png);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>260</y>
-      <width>54</width>
-      <height>17</height>
-     </rect>
     </property>
     <property name="text">
      <string/>
@@ -647,19 +634,6 @@ border-radius: 20px;
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>80</y>
-      <width>121</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="percentageHigh">
     <property name="geometry">
      <rect>
@@ -708,34 +682,6 @@ border-radius: 20px;
      <set>Qt::AlignBottom|Qt::AlignHCenter</set>
     </property>
    </widget>
-   <zorder>label_7</zorder>
-   <zorder>label</zorder>
-   <zorder>screenDisplay</zorder>
-   <zorder>upButton</zorder>
-   <zorder>leftButton</zorder>
-   <zorder>downButton</zorder>
-   <zorder>okButton</zorder>
-   <zorder>rightButton</zorder>
-   <zorder>menuButton</zorder>
-   <zorder>backButton</zorder>
-   <zorder>powerButton</zorder>
-   <zorder>mainMenu</zorder>
-   <zorder>chargeButton</zorder>
-   <zorder>breathPacer</zorder>
-   <zorder>outLabel</zorder>
-   <zorder>inLabel</zorder>
-   <zorder>coherenceLabel</zorder>
-   <zorder>lengthLabel</zorder>
-   <zorder>achievementLabel</zorder>
-   <zorder>frame</zorder>
-   <zorder>ledIndicator</zorder>
-   <zorder>DELETE</zorder>
-   <zorder>HR_contact</zorder>
-   <zorder>avgCoherence</zorder>
-   <zorder>label_3</zorder>
-   <zorder>percentageHigh</zorder>
-   <zorder>percentageMed</zorder>
-   <zorder>percentageLow</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

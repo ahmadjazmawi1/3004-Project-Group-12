@@ -116,7 +116,7 @@ void MainWindow::newSess(Session* s){
 
 
     this->metricsTimer = new QTimer(this);
-    this->metricsTimer->start(6000);
+    this->metricsTimer->start(5000);
     connect(this->metricsTimer, SIGNAL(timeout()), this, SLOT(handlePopulateMetrics()));
 
     ui->breathPacer->setValue(ui->breathPacer->minimum());
@@ -159,6 +159,7 @@ void MainWindow::handlePopulateMetrics(){
 void MainWindow::showSummary(Session* s){
     this->secondHR=false;
     this->graphTimer->stop();
+    this->metricsTimer->stop();
     ui->breathPacer->setValue(ui->breathPacer->minimum());
     this->breathPTimer->stop();
     this->inSummary = true;
@@ -378,6 +379,9 @@ void MainWindow::powerButton(){
 
         if(powerStatus==false && BatteryLevel > 0){
             powerStatus=true;
+            if(ui->Graphwidget->isVisible() || ui->bPSetting->isVisible()){
+                ui->breathPacer->setVisible(powerStatus);
+            }
             ui->screenDisplay->setStyleSheet("background-color: white");
 
             simTime->start(10000);
@@ -385,11 +389,22 @@ void MainWindow::powerButton(){
 
         }else{
             powerStatus=false;
+            if(this->isSession){
+                contactHR();
+            }
+            if(ui->breathPacer->isVisible()){
+                 ui->breathPacer->setVisible(powerStatus);
+            }
+            if(ui->DELETE->isVisible()){
+                ui->DELETE->setVisible(powerStatus);
+            }
+
             ui->screenDisplay->setStyleSheet("background-color: black");
         }
         ui->batteryLevel->setVisible(powerStatus);
         ui->mainListWidget->setVisible(powerStatus);
         ui->mainMenu->setVisible(powerStatus);
+
 
 
 }
@@ -407,12 +422,7 @@ void MainWindow::useBattery() {
     }else{
         qInfo("Critcial Battery Level reached system will shut down !!!!");
         qInfo("Please Re-Charge!!!");
-        powerStatus=false;
-        ui->screenDisplay->setStyleSheet("background-color: black");
-
-        ui->batteryLevel->setVisible(powerStatus);
-        ui->mainListWidget->setVisible(powerStatus);
-        ui->mainMenu->setVisible(powerStatus);
+        powerButton();
     }
 
 }

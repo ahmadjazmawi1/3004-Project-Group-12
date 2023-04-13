@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->powerButton, SIGNAL (released()), this, SLOT (powerButton()));
     connect(ui->chargeButton, SIGNAL (released()), this, SLOT (ChargeBattery()));
     connect(ui->bPSetting, SIGNAL(activated(int)), this, SLOT(changeBreathPacer(int)));
-    connect(ui->CHSetting, SIGNAL(activated(int)), this, SLOT(changeCL(int)));
+
     connect(ui->HR_contact, SIGNAL (released()), this, SLOT (contactHR()));
 
 
@@ -277,7 +277,7 @@ void MainWindow::okButton(){
     if(index == 2 && masterMenu->getName() == "MAIN MENU"){
         allSessions.clear();
         histList.clear();
-
+        cout<<"Device has been reset"<<endl;
     }
 
     //starting a new session
@@ -325,9 +325,10 @@ void MainWindow::contactHR(){
         ledOff();
         this->metricsTimer->stop();
         this->isSession=false;      //set isSession to false, because the session is over
+        cout<<"No sensor found! Session is complete"<<endl;
 
         showSummary(this->session);
-        //ui->HR_contact->setVisible(false);  //uncomment if Voja says he likes it and its good with the specs
+        ui->HR_contact->setVisible(false);  //uncomment if Voja says he likes it and its good with the specs
         return;
     }else{
         //HR contact found start session

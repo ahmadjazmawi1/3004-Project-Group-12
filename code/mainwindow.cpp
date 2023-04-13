@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->outLabel->setVisible(false);
     ui->HR_contact->setVisible(false);
     simTime = new QTimer(this);;
-    breathPTimer = new QTimer(this);
+
     ui->bPSetting->setCurrentIndex(9);
     //this->secondHR=true;
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
@@ -118,7 +118,7 @@ void MainWindow::newSess(Session* s){
     this->metricsTimer = new QTimer(this);
     this->metricsTimer->start(5000);
     connect(this->metricsTimer, SIGNAL(timeout()), this, SLOT(handlePopulateMetrics()));
-
+    breathPTimer = new QTimer(this);
     ui->breathPacer->setValue(ui->breathPacer->minimum());
     breathPTimer->start(1000);
     connect(breathPTimer, SIGNAL (timeout()), this, SLOT (moveBreathPacer()));

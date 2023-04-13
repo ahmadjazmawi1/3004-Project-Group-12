@@ -48,9 +48,6 @@ using namespace std;
     void setChallengeLevel(int):    sets the challenge level
     QDateTime getTime():            returns the time the session started
 
-
-
-
 */
 
 class Session
@@ -87,13 +84,9 @@ public:
 
 private:
 
-
     QVector<int> timeInCoherenceLevel;
     int challengeLevel;
-
     QDateTime startTime;
-
-
 };
 
 #endif // SESSION_H

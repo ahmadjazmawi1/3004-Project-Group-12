@@ -501,7 +501,7 @@ void MainWindow::populateMetrics(Session* s){
         //used to count time to calculate percentage
         s->secondsCounter+=1;
 
-       //if index reaches end loop back to begininnig
+       //if index reaches end. loop back to begininnig
        if(s->currIndex==s->lowCoherences.size()-1){
            s->currIndex=0;
        }
@@ -535,6 +535,7 @@ void MainWindow::populateMetrics(Session* s){
            ledGreen();
            cout << "BEEP! High coherence reached" <<endl;
             s->highPercentage+=1;
+
        }
 
 }

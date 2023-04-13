@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     simTime = new QTimer(this);;
 
     ui->bPSetting->setCurrentIndex(9);
-    //this->secondHR=true;
+
     connect(ui->upButton, SIGNAL (released()), this, SLOT (upButton()));
     connect(ui->downButton, SIGNAL (released()), this, SLOT (downButton()));
     connect(ui->leftButton, SIGNAL (released()), this, SLOT (leftButton()));
@@ -140,11 +140,11 @@ void MainWindow::handleTimeout(){
     QString le = "Length\n"+QString::asprintf("%2d:%2d:%2d", this->session->hh, this->session->mm, this->session->ss);
     ui->lengthLabel->setText(le);
     this->session->ss++;
-    if(this->session->ss > 59){
+    if(this->session->ss > 59){ //ensuring seconds dont go beyond 59 seconds by incrementing the minutes and resetting seconds
         this->session->mm++;
         this->session->ss=0;
     }
-    if(this->session->mm > 59){
+    if(this->session->mm > 59){ //ensuring minutes dont go beyond 59 mins by incrementing hours and resetting mins
         this->session->hh++;
         this->session->mm=0;
     }
@@ -157,7 +157,6 @@ void MainWindow::handlePopulateMetrics(){
 }
 
 void MainWindow::showSummary(Session* s){
-    this->secondHR=false;
     this->graphTimer->stop();
     this->metricsTimer->stop();
     ui->breathPacer->setValue(ui->breathPacer->minimum());
@@ -285,7 +284,6 @@ void MainWindow::okButton(){
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
         ui->HR_contact->setVisible(true);
         this->session = new Session();
-        this->secondHR=true;
         MainWindow::updateMenu(this->session->getTime().toString(), {});    //clears the menu options from the screen
         return;
     }
@@ -432,32 +430,32 @@ void MainWindow::useBattery() {
 }
 void MainWindow::BatLevel(double batLevel) {
 
-    if (batLevel >= 0.0 && batLevel <= 100.0) {
-        if (batLevel == 0.0 && powerStatus == true) {
 
-            BatteryLevel=0;
-        }else{
-            BatteryLevel=batLevel;
-        }
+    if (batLevel == 0.0 && powerStatus == true) {
 
-
-        int adjLevel = int(batLevel);
-        ui->batteryLevel->setValue(adjLevel);
-
-        QString greenBat = "QProgressBar { selection-background-color: rgb(78, 154, 6); background-color: rgb(0, 0, 0); }";
-        QString yellowBat = "QProgressBar { selection-background-color: rgb(196, 160, 0); background-color: rgb(0, 0, 0); }";
-        QString redBat = "QProgressBar { selection-background-color: rgb(164, 0, 0); background-color: rgb(0, 0, 0); }";
-
-        if (adjLevel >= 50) {
-            ui->batteryLevel->setStyleSheet(greenBat);
-        }
-        else if (adjLevel >= 20) {
-            ui->batteryLevel->setStyleSheet(yellowBat);
-        }
-        else {
-            ui->batteryLevel->setStyleSheet(redBat);
-        }
+        BatteryLevel=0;
+    }else{
+        BatteryLevel=batLevel;
     }
+
+
+    int adjLevel = int(batLevel);
+    ui->batteryLevel->setValue(adjLevel);
+
+    QString greenBat = "QProgressBar { selection-background-color: rgb(78, 154, 6); background-color: rgb(0, 0, 0); }";
+    QString yellowBat = "QProgressBar { selection-background-color: rgb(196, 160, 0); background-color: rgb(0, 0, 0); }";
+    QString redBat = "QProgressBar { selection-background-color: rgb(164, 0, 0); background-color: rgb(0, 0, 0); }";
+
+    if (adjLevel >= 50) {
+        ui->batteryLevel->setStyleSheet(greenBat);
+    }
+    else if (adjLevel >= 20) {
+        ui->batteryLevel->setStyleSheet(yellowBat);
+    }
+    else {
+        ui->batteryLevel->setStyleSheet(redBat);
+    }
+
 
 }
 void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList menuItems){

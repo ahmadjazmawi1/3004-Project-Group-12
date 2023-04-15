@@ -94,7 +94,7 @@ private:
     int BatteryLevel;
     QTimer *simTime;
     QTimer *breathPTimer;
-    bool secondHR;
+
 
 private slots:
     void upButton();

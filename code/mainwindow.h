@@ -66,7 +66,6 @@
     void deleteSession(Session*); deletes the session
     void handleDelete(); handler for the deleteSession function since the released SLOT doesnt take parameters
     void changeBreathPacer(int); connected to the breath pacer dropdown, stores the new value selected
-    void changeCL(int); connected to challenge level dropdown, stores the new value selected
     void contactHR(): starts the session when HR contact is found
 
 */
@@ -135,7 +134,6 @@ private slots:
     void handleDelete();
     void handlePopulateMetrics();
     void changeBreathPacer(int);
-    void changeCL(int);
     void contactHR();
 };
 #endif // MAINWINDOW_H

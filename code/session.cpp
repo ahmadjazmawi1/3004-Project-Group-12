@@ -8,7 +8,6 @@ Session::Session()
     this->currCoherence = 0.0;
 
     this->achievement = 0.0;
-    this->challengeLevel = 1;
     this->lowCoherenceData = {{0, 60}, {1, 75}, {2, 76}, {3, 90}, {4, 70}, {5, 72}, {6, 60}, {7, 80},
                               {8, 81}, {9, 85}, {10, 70}, {11, 70}, {12, 80}, {13, 75}, {14, 100},
                               {15, 60}, {16, 80}, {17, 70}, {18, 75}, {19, 80}, {20, 81}, {21, 85},
@@ -48,23 +47,12 @@ Session::Session()
     this->lowPercentage=0;
     this->secondsCounter=0;
 
-
 }
-
-
 
 QDateTime Session::getTime(){
     return this->startTime;
 }
 
-
-
 double Session::getAchievement(){
     return this->achievement;
-}
-
-
-
-void Session::setChallengeLevel(int c){
-    this->challengeLevel = c;
 }

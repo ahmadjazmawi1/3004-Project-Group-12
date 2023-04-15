@@ -95,6 +95,7 @@ private:
     QTimer *simTime;
     QTimer *breathPTimer;
 
+
 private slots:
     void upButton();
     void downButton();

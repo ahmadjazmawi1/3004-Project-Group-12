@@ -13,11 +13,7 @@
  * Menu* masterMenu;
     Menu* mainMenu;
     QListWidget *activeQListWidget; keeps track of the currently selected widget in the list
-    QStringList breathPList;
-    QStringList settingList;
-    QStringList challengeList;
     QStringList histList;   //stores the dates for sessions, to be used in the history screen to show the dates of sessions
-    int currChallenge=1;
     int currPacer=10; speed of the pacer based on what is elected by the user
     bool powerStatus: used to check power status
     bool isSession=false: this will allow use to stop and start a new session based on what the previous functionality set the this variable as we have on HR button so of pressed tice the session is set to fall meaning we no longer have HR contact
@@ -25,13 +21,9 @@
     QVector<Session*> allSessions;  Stores the session objects that were created for use in history
     bool inSummary=false;
     QTimer *graphTimer:  graphs the data every second
-    QTimer *dataTimer :generates 1 data value every second
-
     int BatteryLevel: battery level
     QTimer *simTime: simulator time
     QTimer *breathPTimer: breath pacer time
-
-
  *
  *
  * class functions:
@@ -39,7 +31,7 @@
     ~MainWindow(); destructor
     std::map<int, int> generateData();
     void initMenus(Menu*): is the main master menu holds all the other child menus in them this where we initialize all other child menus functionality
-    void updateMenu(const QString, const QStringList); This function is used mainly to update our menus based on what the user dose
+    void updateMenu(const QStringList); This function is used mainly to update our menus based on what the user does
     void BatLevel(double batLevel): this hold the functionality for the battery depressing and charging and change the variable that holds the battery variable
     void populateMetrics(Session* s); This populates/calculates the coherence and achievement values. Making sure to call the right functions for LED lights as well.
 
@@ -81,7 +73,7 @@ public:
     ~MainWindow();
     std::map<int, int> generateData();
     void initMenus(Menu*);
-    void updateMenu(const QString, const QStringList);
+    void updateMenu(const QStringList);
     void BatLevel(double batLevel);
     void populateMetrics(Session* s);
 
@@ -90,9 +82,7 @@ private:
     Menu* masterMenu;
     Menu* mainMenu;
     QListWidget *activeQListWidget;
-
     QStringList histList;
-    int currChallenge=1;
     int currPacer=10;
     bool powerStatus;
     bool isSession=false;
@@ -100,16 +90,11 @@ private:
     QVector<Session*> allSessions;
     bool inSummary=false;
     QTimer *graphTimer;         //graphs the data every second
-    QTimer *dataTimer;          //generates 1 data value every second
     QTimer *metricsTimer;
-
     int BatteryLevel;
     QTimer *simTime;
     QTimer *breathPTimer;
     bool secondHR;
-
-
-
 
 private slots:
     void upButton();

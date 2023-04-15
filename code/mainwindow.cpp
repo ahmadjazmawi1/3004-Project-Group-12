@@ -257,9 +257,7 @@ void MainWindow::rightButton(){
 
 }
 
-void MainWindow::changeCL(int c){
-    this->session->setChallengeLevel(c);
-}
+
 void MainWindow::changeBreathPacer(int b){
     ui->breathPacer->setValue(ui->breathPacer->minimum());
     this->currPacer = b+1;
@@ -273,19 +271,27 @@ void MainWindow::okButton(){
     //in case user presses ok in an empty screen
     if(index < 0)
         return;
-    //reset option. clears the vector containing session objects and the vector containing session dates
-    if(index == 2 && masterMenu->getName() == "MAIN MENU"){
-        allSessions.clear();
-        histList.clear();
-        cout<<"Device has been reset"<<endl;
-    }
-
     //starting a new session
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
         ui->HR_contact->setVisible(true);
         this->session = new Session();
         MainWindow::updateMenu(this->session->getTime().toString(), {});    //clears the menu options from the screen
         return;
+    }
+
+    //showing session dates in HISTORY option
+    else if(index==1 && masterMenu->getName() == "MAIN MENU"){    //checks if use clicked ok on history option by checking if
+                                                                //child menu at index is HISTORY
+        masterMenu = masterMenu->get(index);
+        MainWindow::updateMenu(masterMenu->getName(), histList); //clears the menu options from th screen and adds session dates
+
+    }
+
+    //reset option. clears the vector containing session objects and the vector containing session dates
+    else if(index == 2 && masterMenu->getName() == "MAIN MENU"){
+        allSessions.clear();
+        histList.clear();
+        cout<<"Device has been reset"<<endl;
     }
 
     //showing summary view when clicking on a date in history screen
@@ -303,13 +309,7 @@ void MainWindow::okButton(){
         return;
     }
 
-    //showing session dates in HISTORY option
-    else if(masterMenu->get(index)->getName() == "HISTORY"){    //checks if use clicked ok on history option by checking if
-                                                                //child menu at index is HISTORY
-        masterMenu = masterMenu->get(index);
-        MainWindow::updateMenu(masterMenu->getName(), histList); //clears the menu options from th screen and adds session dates
 
-    }
 
 }
 
@@ -327,7 +327,7 @@ void MainWindow::contactHR(){
         cout<<"No sensor found! Session is complete"<<endl;
 
         showSummary(this->session);
-        ui->HR_contact->setVisible(false);  //uncomment if Voja says he likes it and its good with the specs
+        ui->HR_contact->setVisible(false);
         return;
     }else{
         //HR contact found start session

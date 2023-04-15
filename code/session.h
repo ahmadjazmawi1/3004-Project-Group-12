@@ -36,16 +36,12 @@ using namespace std;
     double percentageLow:   counter for the amount of time the coherence was low during the session
     double secondsCounter:  counter for the amount of times populateMetrics is called
     int numCoh:             stores the number of coherence scores that have been graphed, to calculate average coherence
-    QVector<int> timeInCoherenceLevel:  stores the length of time in each coherence level. index 0 is for level 1, index 1 is for level 2, and so on
-    int challengeLevel;
-
     QDateTime startTime:    the time the session started
  *
  *
  * class functions:
     Session():                      constructor to initialize all Data members
     double getAchievement():        returns the achievement score
-    void setChallengeLevel(int):    sets the challenge level
     QDateTime getTime():            returns the time the session started
 
 */
@@ -55,7 +51,6 @@ class Session
 public:
     Session();
     double getAchievement();
-    void setChallengeLevel(int);
     QDateTime getTime();
 
     double currCoherence;
@@ -84,8 +79,6 @@ public:
 
 private:
 
-    QVector<int> timeInCoherenceLevel;
-    int challengeLevel;
     QDateTime startTime;
 };
 

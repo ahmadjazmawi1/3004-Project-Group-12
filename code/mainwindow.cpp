@@ -61,7 +61,7 @@ void MainWindow::makeGraph(Session* s){
 
         if(s->arrIdx==s->hrvData.at(s->hiOrLo).size()){ //check if we need to repeat HRV data from beginning
                     s->arrIdx=0;    //reset arrIdx to 0 because we need to access elements from the beginning (if not we'd get index out of bounds)
-                }
+        }
         s->x.push_back(s->cohIdx);  //add the cohIdx (current second) to x
         s->y.push_back(s->hrvData.at(s->hiOrLo).at(s->arrIdx)); //add the heart rate in high coherence HRV map with key arrIdx into y
 
@@ -275,7 +275,7 @@ void MainWindow::okButton(){
     else if(index==0 && masterMenu->getName() == "MAIN MENU"){
         ui->HR_contact->setVisible(true);
         this->session = new Session();
-        MainWindow::updateMenu(this->session->getTime().toString(), {});    //clears the menu options from the screen
+        MainWindow::updateMenu({});    //clears the menu options from the screen
         return;
     }
 
@@ -283,7 +283,7 @@ void MainWindow::okButton(){
     else if(index==1 && masterMenu->getName() == "MAIN MENU"){    //checks if use clicked ok on history option by checking if
                                                                 //child menu at index is HISTORY
         masterMenu = masterMenu->get(index);
-        MainWindow::updateMenu(masterMenu->getName(), histList); //clears the menu options from th screen and adds session dates
+        MainWindow::updateMenu(histList); //clears the menu options from th screen and adds session dates
 
     }
 
@@ -303,7 +303,7 @@ void MainWindow::okButton(){
         ui->DELETE->setVisible(true);
         connect(ui->DELETE, SIGNAL(released()), this, SLOT(handleDelete()));
 
-        MainWindow::updateMenu(allSessions.at(index)->getTime().toString(), {});    //clears the menu options from th screen
+        MainWindow::updateMenu({});    //clears the menu options from th screen
 
         showSummary(allSessions.at(index)); //show the summary screen for the selected session
         return;
@@ -354,7 +354,7 @@ void MainWindow::backButton(){
         ui->percentageLow->setVisible(false);
         ui->DELETE->setVisible(false);
         ui->HR_contact->setVisible(false);
-        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());
+        updateMenu(masterMenu->getMenuItems());
 
         this->inSummary = false;
     }
@@ -366,7 +366,7 @@ void MainWindow::backButton(){
     //for returning from newSession to main menu
     else {
         masterMenu = masterMenu->getParent();
-        updateMenu(masterMenu->getName(), masterMenu->getMenuItems());  //clear the screen and add main menu options
+        updateMenu(masterMenu->getMenuItems());  //clear the screen and add main menu options
     }
 
 }
@@ -458,7 +458,8 @@ void MainWindow::BatLevel(double batLevel) {
 
 
 }
-void MainWindow::updateMenu(const QString selectedMenuItem, const QStringList menuItems){
+//remove selectedMenuItem parameter
+void MainWindow::updateMenu(const QStringList menuItems){
     activeQListWidget->clear();
     activeQListWidget->addItems(menuItems);
     activeQListWidget->setCurrentRow(0);
